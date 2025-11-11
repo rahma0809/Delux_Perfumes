@@ -305,6 +305,13 @@ img {
   color: #000000;
 }
 
+.nav-icon1 {
+  color: var(--white);
+  font-size: 1.2rem;
+  position: relative;
+  cursor: pointer;
+}
+
 
 .nav-icon {
   color: var(--white);
@@ -314,6 +321,10 @@ img {
 }
 
 .header.scrolled .nav-icon {
+  color: var(--dark);
+}
+
+.header.scrolled .nav-icon1 {
   color: var(--dark);
 }
 
@@ -383,7 +394,6 @@ img {
 }
 
 .nav-icon {
-  color: var(--dark);
   font-size: 1.2rem;
   margin-left: 1.2rem;
   position: relative;
@@ -397,6 +407,7 @@ img {
 
 /*  user icon  */
 .user-icon {
+  color: var(--dark);
   background: var(--secondary);
   padding: 0.5rem 0.7rem;
   border-radius: 50%;
@@ -404,14 +415,14 @@ img {
 
 .user-icon:hover {
   background: var(--secondary-dark);
-  color: var(--white);
+  color: var(--dark);
 }
 
 
 /* Hero Section */
 .hero {
   height: 100vh;
-  background: url("Images/imgp4.png")center/cover no-repeat; /* replace with your image path */
+  background: url("Images/imgp4.png")center/cover no-repeat; 
   display: flex;
   align-items: center;
   color: var(--white);
@@ -523,6 +534,7 @@ img {
     transform: translateY(-5px);
   }
 }
+
 
 /* About Section */
 .about {
@@ -751,12 +763,12 @@ img {
 .menu-item-img {
   height: 220px;
   width: 100%;
-  background-size: cover;        /* fills the box */
-  background-position: center;   /* centers the image */
-  background-repeat: no-repeat;  /* prevents tiling */
+  background-size: cover;        
+  background-position: center;   
+  background-repeat: no-repeat;  
   position: relative;
-  border-radius: 10px;           /* optional – makes it look premium */
-  overflow: hidden;              /* ensures clean edges if zoom added */
+  border-radius: 10px;        
+  overflow: hidden;             
 }
 
 
@@ -1073,15 +1085,50 @@ img {
 }
 
 .bestsell-author-img {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
+  width: 170px;
+  height: 170px;
+  border-radius:var(--radius-sm);
+  overflow: hidden;
+  background: url("Images/imgp11.png")
+    center/cover no-repeat;
+  border: 3px solid var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.bestsell-author-img1 {
+  width: 200px;
+  height: 200px;
+  border-radius:var(--radius-sm);
+  overflow: hidden;
+  background: url("Images/imgp6.jpg")
+    center/cover no-repeat;
+  border: 3px solid var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.bestsell-author-img2 {
+  width: 170px;
+  height: 170px;
+  border-radius:var(--radius-sm);
   overflow: hidden;
   background: url("Images/imgp8.jpg")
     center/cover no-repeat;
   border: 3px solid var(--white);
   box-shadow: var(--shadow-sm);
 }
+
+.bestsell-author-img3 {
+  width: 200px;
+  height: 200px;
+  border-radius:var(--radius-sm);
+  overflow: hidden;
+  background: url("Images/imgp14.jpg")
+    center/cover no-repeat;
+  border: 3px solid var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+
 
 .bestsell-author-name {
   font-size: 1.2rem;

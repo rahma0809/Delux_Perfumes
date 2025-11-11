@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-
   checkScroll();
 
   window.addEventListener("scroll", checkScroll);
@@ -29,6 +28,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+   // Select elements
+const searchBtn = document.getElementById('searchBtn');
+const searchDropdown = document.getElementById('searchDropdown');
+const closeSearch = document.getElementById('closeSearch');
+
+  // Open search bar
+searchBtn.addEventListener('click', () => {
+  searchDropdown.style.display = 'flex';
+  document.getElementById('searchInput').focus();
+});
+
+// Close search bar
+closeSearch.addEventListener('click', () => {
+  searchDropdown.style.display = 'none';
+});
+
+
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
@@ -45,26 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  
-
-  // Select elements
-const searchBtn = document.getElementById('searchBtn');
-const searchDropdown = document.getElementById('searchDropdown');
-const closeSearch = document.getElementById('closeSearch');
-
-
-// Open search bar
-searchBtn.addEventListener('click', () => {
-  searchDropdown.style.display = 'flex';
-  document.getElementById('searchInput').focus();
-});
-
-// Close search bar
-closeSearch.addEventListener('click', () => {
-  searchDropdown.style.display = 'none';
-});
-
 
   const addButtons = document.querySelectorAll(".menu-item-btn");
   const cartCount = document.querySelector(".cart-count");
