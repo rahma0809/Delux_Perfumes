@@ -1,0 +1,146 @@
+:root {
+    
+    --primary:#9d2e33;
+    --primary-dark:#7a1f24; 
+    --secondary:#d4a96a; 
+    --secondary-dark:#b3894c;
+    --accent:#405e4c; --dark:#1d1d1d; 
+    --white:#fff; 
+    --off-white:#f8f6f3; 
+    --light-gray:#e9e5e0;
+    --radius:8px;
+}
+
+body { margin:0; 
+    font-family:"Outfit",sans-serif; 
+    background:var(--off-white);
+
+}
+.sidebar {width:240px; 
+    background:var(--dark); 
+    color:white; height:100vh; 
+    position:fixed; top:0; 
+    left:0; 
+    padding-top:20px;
+}
+
+.sidebar h2 {text-align:center; 
+    margin:0 0 20px; 
+    font-size:24px; 
+    color:var(--secondary);
+}
+
+.sidebar a {display:block; 
+    padding:15px 20px; color:white; 
+    text-decoration:none; 
+    border-bottom:1px solid #2d2d2d; 
+    transition:.3s;
+}
+
+.sidebar a:hover {background:var(--secondary); 
+    color:var(--dark);
+}
+
+.main {margin-left:250px; 
+    padding:20px;
+}
+
+.title {
+    font-size:28px; 
+    font-weight:bold; 
+    color:var(--primary);
+}
+
+.stats {
+    display:flex; 
+    gap:20px; 
+    margin:20px 0;
+}
+
+.card {
+    flex:1; 
+    background:white; 
+    padding:20px; 
+    border-radius:var(--radius); 
+    box-shadow:0 4px 12px rgba(0,0,0,0.08); 
+    text-align:center;
+}
+.card h3 {
+    margin:10px 0; 
+    font-size:22px; 
+    color:var(--primary-dark);
+}
+
+.card p {
+    font-size:18px; 
+    color:var(--accent);
+}
+
+.addBtn {
+    padding:12px 20px; 
+    background:var(--primary); 
+    color:white; border-radius:6px; 
+    cursor:pointer; 
+    border:none; 
+    margin-bottom:20px; 
+    font-weight:600;
+}
+
+.addBtn:hover{
+    background:var(--primary-dark);
+}
+
+table{
+    width:100%; 
+    border-collapse:collapse; 
+    background:white; 
+    border-radius:10px; 
+    overflow:hidden;
+}
+
+th,td{
+    padding:15px; 
+    border-bottom:1px solid var(--light-gray);
+}
+
+th{
+    background:var(--secondary); 
+    color:var(--dark);
+}
+
+tr:hover{
+    background:#f3f2f1;
+}
+
+.popup {position:fixed; 
+    top:0; left:0; width:100%; 
+    height:100%; 
+    background:rgba(0,0,0,0.7); 
+    display:none; 
+    justify-content:center; 
+    align-items:center;
+}
+
+.popup-box {width:350px; 
+    background:white; 
+    padding:25px; 
+    border-radius:12px;}
+
+.popup-box input{
+    width:100%; padding:10px; 
+    margin:8px 0; 
+    border:1px solid var(--light-gray); 
+    border-radius:6px; 
+    background:var(--off-white);}
+
+.btn-save{
+    width:100%; padding:12px; 
+    background:var(--secondary); 
+    color:var(--dark); 
+    border:none; border-radius:6px; 
+    cursor:pointer; 
+    font-weight:600;}
+
+.btn-save:hover{
+    background:var(--secondary-dark);
+}

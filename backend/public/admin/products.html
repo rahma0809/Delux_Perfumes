@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Products - Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+<style>
+
+.addBtn { 
+    padding:12px 20px; 
+    background:#9d2e33; 
+    color:white; 
+    border-radius:6px; 
+    cursor:pointer; 
+    border:none; 
+    margin-bottom:20px; 
+    font-weight:600;
+    font-size:16px;
+}
+.addBtn:hover{background:#7a1f24;}
+
+table{
+    width:100%; 
+    border-collapse:collapse; 
+    background:white; 
+    border-radius:10px; 
+    overflow:hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+th,td{
+    padding:15px; 
+    border-bottom:1px solid #e9e5e0;
+    text-align: left;
+}
+th{
+    background:#d4a96a; 
+    color:#1d1d1d;
+    font-weight: 600;
+}
+tr:hover{background:#f3f2f1;}
+
+/* Action buttons */
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.edit-btn {
+    background: #007bff;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #0056b3;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+.load-existing-btn {
+    padding:12px 20px; 
+    background:#28a745; 
+    color:white; 
+    border-radius:6px; 
+    cursor:pointer; 
+    border:none; 
+    margin-bottom:20px; 
+    margin-left: 10px;
+    font-weight:600;
+    font-size:16px;
+}
+
+.load-existing-btn:hover {
+    background: #218838;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+/* Category badges */
+.category-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.category-her { background: #ffd6e7; color: #c2185b; }
+.category-him { background: #bbdefb; color: #1565c0; }
+.category-unisex { background: #c8e6c9; color: #2e7d32; }
+.category-gifts { background: #fff9c4; color: #f57f17; }
+
+/* Simple stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.stat-card h4 {
+    margin: 0 0 10px 0;
+    color: #9d2e33;
+    font-size: 14px;
+}
+
+.stat-card .number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Popup for Add/Edit Product */
+.popup {
+    position:fixed; 
+    top:0; 
+    left:0; 
+    width:100%; 
+    height:100%; 
+    background:rgba(0,0,0,0.7); 
+    display:none; 
+    justify-content:center; 
+    align-items:center;
+    z-index: 1000;
+}
+.popup-box {
+    width:400px; 
+    background:white; 
+    padding:30px; 
+    border-radius:12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.popup-box h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #9d2e33;
+    font-size: 22px;
+}
+.popup-box input, .popup-box select {
+    width:100%; 
+    padding:12px; 
+    margin:10px 0; 
+    border:1px solid #e9e5e0; 
+    border-radius:6px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+.popup-box input:focus, .popup-box select:focus {
+    outline: none;
+    border-color: #d4a96a;
+}
+.btn-save{
+    width:100%; 
+    padding:12px; 
+    background:#d4a96a; 
+    color:#1d1d1d; 
+    border:none; 
+    border-radius:6px; 
+    cursor:pointer; 
+    font-weight:600;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.btn-save:hover{background:#b3894c;}
+.cancelBtn{
+    width:100%; 
+    padding:12px; 
+    margin-top:10px; 
+    background:#9d2e33; 
+    color:white; 
+    border:none; 
+    border-radius:6px; 
+    cursor:pointer;
+    font-size: 16px;
+}
+.cancelBtn:hover{background:#7a1f24;}
+
+/* Delete Confirmation Modal */
+.delete-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.delete-modal-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    color: #dc3545;
+}
+
+.delete-modal-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.delete-modal-message {
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.delete-modal-product {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 15px 0;
+    font-weight: bold;
+    color: #9d2e33;
+}
+
+.delete-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.delete-modal-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    min-width: 100px;
+    transition: all 0.3s;
+}
+
+.delete-modal-cancel {
+    background: #6c757d;
+    color: white;
+}
+
+.delete-modal-cancel:hover {
+    background: #545b62;
+}
+
+.delete-modal-confirm {
+    background: #dc3545;
+    color: white;
+}
+
+.delete-modal-confirm:hover {
+    background: #c82333;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #9d2e33;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin.html">Dashboard</a> 
+    <a href="products.html">Products</a>
+    <a href="orders.html">Orders</a>
+    <a href="users.html">Users</a>
+</div>
+
+<div class="main">
+    <h1 class="title">Products Management</h1>
+    
+    <!-- Statistics -->
+    <div class="stats">
+        <div class="stat-card">
+            <h4>Total Products</h4>
+            <div class="number" id="totalProductsCount">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>For Her</h4>
+            <div class="number" id="herCount">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>For Him</h4>
+            <div class="number" id="himCount">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Unisex</h4>
+            <div class="number" id="unisexCount">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Gift Sets</h4>
+            <div class="number" id="giftsCount">0</div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="button-group">
+        <button class="addBtn" onclick="openPopup()">+ Add New Product</button>
+        <button class="load-existing-btn" onclick="loadExistingProducts()">📥 Load Website Products</button>
+    </div>
+    
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p>Loading products...</p>
+    </div>
+    
+    <!-- Products Table -->
+    <table id="productTable">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Price (AED)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody">
+            <!-- Products will be loaded here -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Product Popup -->
+<div class="popup" id="popup">
+    <div class="popup-box">
+        <h3 id="popupTitle">Add New Product</h3>
+        <input type="text" id="pname" placeholder="Product Name" required>
+        <input type="number" id="pprice" placeholder="Price in AED" step="0.01" min="0" required>
+        <select id="pcategory" required>
+            <option value="">Select Category</option>
+            <option value="For Her">For Her</option>
+            <option value="For Him">For Him</option>
+            <option value="Unisex">Unisex</option>
+            <option value="Gift Sets">Gift Sets</option>
+        </select>
+        <button class="btn-save" id="saveButton" onclick="saveProduct()">Save Product</button>
+        <button class="cancelBtn" onclick="closePopup()">Cancel</button>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="delete-modal-overlay">
+    <div class="delete-modal-content">
+        <div class="delete-modal-icon">🗑️</div>
+        <div class="delete-modal-title">Delete Product Confirmation</div>
+        <div class="delete-modal-message">
+            Are you sure you want to delete this product?<br>
+            This action cannot be undone!
+        </div>
+        <div class="delete-modal-product" id="deleteProductName">Product Name</div>
+        <div class="delete-modal-buttons">
+            <button class="delete-modal-btn delete-modal-cancel" onclick="closeDeleteModal()">Cancel</button>
+            <button class="delete-modal-btn delete-modal-confirm" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const API_URL = 'http://localhost:3000';
+
+let isEditMode = false;
+let currentProductId = null;
+let productToDelete = null;
+let allProducts = [];
+
+// SIMPLE ALERT FUNCTION
+function showAlert(message, type = 'success') {
+    if (type === 'success') {
+        alert('✅ ' + message);
+    } else {
+        alert('❌ ' + message);
+    }
+}
+
+// LOADING SPINNER FUNCTIONS
+function showLoading() {
+    document.getElementById('loadingSpinner').style.display = 'block';
+    document.getElementById('productTable').style.opacity = '0.5';
+}
+
+function hideLoading() {
+    document.getElementById('loadingSpinner').style.display = 'none';
+    document.getElementById('productTable').style.opacity = '1';
+}
+
+
+function openDeleteModal(productId, productName) {
+    productToDelete = { id: productId, name: productName };
+    document.getElementById('deleteProductName').textContent = productName;
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function closeDeleteModal() {
+    productToDelete = null;
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+async function confirmDelete() {
+    if (!productToDelete) return;
+    
+    const productId = productToDelete.id;
+    const productName = productToDelete.name;
+    
+    console.log('Deleting product ID:', productId, 'Name:', productName);
+    
+    closeDeleteModal();
+    showLoading();
+    
+    try {
+        
+        const endpoints = [
+            `${API_URL}/api/products/${productId}`,
+            `${API_URL}/products/${productId}`
+        ];
+        
+        let success = false;
+        let lastError = '';
+        
+        for (const endpoint of endpoints) {
+            try {
+                console.log(`Trying DELETE on: ${endpoint}`);
+                const response = await fetch(endpoint, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                console.log(`Response status: ${response.status}`);
+                
+                if (response.ok || response.status === 200 || response.status === 204) {
+                    success = true;
+                    
+                  
+                    try {
+                        const result = await response.json();
+                        console.log('Delete result:', result);
+                    } catch (e) {
+                       
+                    }
+                    
+                    break;
+                } else {
+                    const errorText = await response.text();
+                    lastError = `Status: ${response.status}, Response: ${errorText.substring(0, 100)}`;
+                }
+            } catch (error) {
+                lastError = error.message;
+            }
+        }
+        
+        if (success) {
+            allProducts = allProducts.filter(p => p._id !== productId && p.id !== productId);
+            
+          
+            renderProducts();
+            updateStatistics(allProducts);
+            
+            showAlert(`"${productName}" deleted successfully!`);
+        } else {
+            throw new Error(`Delete failed. ${lastError}`);
+        }
+        
+    } catch (error) {
+        console.error('Delete error:', error);
+        showAlert(`Failed to delete product: ${error.message}\n\nMake sure:\n1. Backend server is running\n2. DELETE endpoint is configured\n3. CORS is enabled on backend\n4. Product ID exists in database`, 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// PRODUCT POPUP FUNCTIONS
+function openPopup(product = null) {
+    const popup = document.getElementById('popup');
+    const title = document.getElementById('popupTitle');
+    const saveBtn = document.getElementById('saveButton');
+    
+    if (product) {
+        isEditMode = true;
+        currentProductId = product._id || product.id;
+        title.textContent = 'Edit Product';
+        saveBtn.textContent = 'Update Product';
+        
+        document.getElementById('pname').value = product.name || '';
+        document.getElementById('pprice').value = product.price || '';
+        document.getElementById('pcategory').value = product.category || '';
+    } else {
+        isEditMode = false;
+        currentProductId = null;
+        title.textContent = 'Add New Product';
+        saveBtn.textContent = 'Save Product';
+        
+        document.getElementById('pname').value = '';
+        document.getElementById('pprice').value = '';
+        document.getElementById('pcategory').value = '';
+    }
+    
+    popup.style.display = 'flex';
+}
+
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+    isEditMode = false;
+    currentProductId = null;
+}
+
+
+async function loadProducts() {
+    showLoading();
+    
+    try {
+        console.log('Loading products from:', `${API_URL}/api/products`);
+        
+        const response = await fetch(`${API_URL}/api/products`);
+        
+        if (!response.ok) {
+            throw new Error(`Failed to load: ${response.status} ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('API response:', data);
+        
+        // Handle different response formats
+        let products = [];
+        if (Array.isArray(data)) {
+            products = data;
+        } else if (data.products && Array.isArray(data.products)) {
+            products = data.products;
+        } else if (data.data && Array.isArray(data.data)) {
+            products = data.data;
+        }
+        
+        // Process products to ensure they have categories
+        const processedProducts = products.map(product => {
+            if (!product.category || product.category === 'Uncategorized' || product.category === '' || !product.category.trim()) {
+                product.category = guessCategoryFromName(product.name);
+            }
+            return product;
+        });
+        
+        allProducts = processedProducts;
+        renderProducts();
+        updateStatistics(allProducts);
+        
+        console.log(`Loaded ${processedProducts.length} products`);
+        
+    } catch (error) {
+        console.error('Error loading products:', error);
+        
+        const tableBody = document.getElementById('productTableBody');
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align:center; padding:40px; color:red;">
+                    ❌ Cannot connect to backend server!<br><br>
+                    <strong>Make sure:</strong><br>
+                    1. Backend server is running at ${API_URL}<br>
+                    2. CORS is enabled on backend<br>
+                    3. API endpoint exists: ${API_URL}/api/products<br><br>
+                    <button onclick="loadProducts()" style="padding:8px 16px; background:#9d2e33; color:white; border:none; border-radius:4px; cursor:pointer;">
+                        Retry
+                    </button>
+                </td>
+            </tr>
+        `;
+        resetStatistics();
+    } finally {
+        hideLoading();
+    }
+}
+
+// RENDER PRODUCTS TO TABLE
+function renderProducts() {
+    const tableBody = document.getElementById('productTableBody');
+    
+    if (!allProducts || allProducts.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align:center; padding:40px; color:#666;">
+                     No products found.<br>
+                    Add new products or load existing ones.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    let html = '';
+    allProducts.forEach(product => {
+        // Ensure product has a category 
+        const category = product.category && product.category.trim() ? product.category : guessCategoryFromName(product.name) || 'For Her';
+        const categoryClass = getCategoryClass(category);
+        const productId = product._id || product.id || '';
+        const productName = product.name || 'Unnamed Product';
+       
+        const safeProductName = productName.replace(/'/g, "&#39;").replace(/"/g, "&quot;");
+        
+        html += `
+            <tr>
+                <td><strong>${productName}</strong></td>
+                <td>
+                    <span class="category-badge ${categoryClass}">${category}</span>
+                </td>
+                <td>AED ${product.price ? product.price.toFixed(2) : '0.00'}</td>
+                <td>
+                    <button class="action-btn edit-btn" onclick="editProduct('${productId}', '${safeProductName}')">Edit</button>
+                    <button class="action-btn delete-btn" onclick="openDeleteModal('${productId}', '${safeProductName}')">Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+    
+    tableBody.innerHTML = html;
+}
+
+// CATEGORY GUESSING FUNCTION
+function guessCategoryFromName(name) {
+    if (!name || !name.trim()) return 'For Her';
+    
+    const nameLower = name.toLowerCase();
+    
+    // For Her keywords
+    if (nameLower.includes('rose') || nameLower.includes('jasmine') || 
+        nameLower.includes('bliss') || nameLower.includes('bloom') ||
+        nameLower.includes('velvet') || nameLower.includes('mist') ||
+        nameLower.includes('crystal') || nameLower.includes('luxe') ||
+        nameLower.includes('golden') || nameLower.includes('éclat') ||
+        nameLower.includes('dawn') || nameLower.includes('perle') ||
+        nameLower.includes('blush') || nameLower.includes('floral') ||
+        nameLower.includes('fleur') || nameLower.includes('lily') ||
+        nameLower.includes('orchid') || nameLower.includes('gardenia')) {
+        return 'For Her';
+    }
+    
+    // For Him keywords
+    if (nameLower.includes('oud') || nameLower.includes('royal') || 
+        nameLower.includes('dark') || nameLower.includes('ember') ||
+        nameLower.includes('cedar') || nameLower.includes('noir') ||
+        nameLower.includes('midnight') || nameLower.includes('elixir') ||
+        nameLower.includes('spice') || nameLower.includes('wood') ||
+        nameLower.includes('leather') || nameLower.includes('tobacco') ||
+        nameLower.includes('musk') || nameLower.includes('whiskey')) {
+        return 'For Him';
+    }
+    
+    // Unisex keywords
+    if (nameLower.includes('amber') || nameLower.includes('suede') || 
+        nameLower.includes('citrus') || nameLower.includes('sandalwood') ||
+        nameLower.includes('cloud') || nameLower.includes('horizon') ||
+        nameLower.includes('whisper') || nameLower.includes('white') ||
+        nameLower.includes('fresh') || nameLower.includes('clean') ||
+        nameLower.includes('ocean') || nameLower.includes('breeze') ||
+        nameLower.includes('zen') || nameLower.includes('calm')) {
+        return 'Unisex';
+    }
+    
+    // Gift Sets keywords
+    if (nameLower.includes('set') || nameLower.includes('box') || 
+        nameLower.includes('duo') || nameLower.includes('premium') ||
+        nameLower.includes('elite') || nameLower.includes('gift') ||
+        nameLower.includes('essence') || nameLower.includes('collection') ||
+        nameLower.includes('package') || nameLower.includes('bundle') ||
+        nameLower.includes('combo') || nameLower.includes('kit') ||
+        nameLower.includes('prestige') || nameLower.includes('luxury')) {
+        return 'Gift Sets';
+    }
+    
+    return 'For Her'; // Default
+}
+
+// STATISTICS FUNCTIONS 
+function updateStatistics(products) {
+    if (!products || products.length === 0) {
+        resetStatistics();
+        return;
+    }
+    
+    const total = products.length;
+    let herCount = 0;
+    let himCount = 0;
+    let unisexCount = 0;
+    let giftsCount = 0;
+    
+    products.forEach(p => {
+        // Get category, ensuring it's valid
+        let category = p.category || guessCategoryFromName(p.name) || 'For Her';
+        category = category.trim();
+        
+        // Normalize category names for comparison
+        const catLower = category.toLowerCase();
+        
+        if (catLower.includes('her') || catLower === 'for her' || catLower === 'her') {
+            herCount++;
+        } else if (catLower.includes('him') || catLower === 'for him' || catLower === 'him') {
+            himCount++;
+        } else if (catLower.includes('unisex')) {
+            unisexCount++;
+        } else if (catLower.includes('gift') || catLower.includes('set')) {
+            giftsCount++;
+        } else {
+            // Default to For Her if category is unrecognized
+            herCount++;
+        }
+    });
+    
+    document.getElementById('totalProductsCount').textContent = total;
+    document.getElementById('herCount').textContent = herCount;
+    document.getElementById('himCount').textContent = himCount;
+    document.getElementById('unisexCount').textContent = unisexCount;
+    document.getElementById('giftsCount').textContent = giftsCount;
+    
+    console.log(`Statistics: Total=${total}, Her=${herCount}, Him=${himCount}, Unisex=${unisexCount}, Gifts=${giftsCount}`);
+}
+
+function resetStatistics() {
+    document.getElementById('totalProductsCount').textContent = '0';
+    document.getElementById('herCount').textContent = '0';
+    document.getElementById('himCount').textContent = '0';
+    document.getElementById('unisexCount').textContent = '0';
+    document.getElementById('giftsCount').textContent = '0';
+}
+
+// CATEGORY STYLING
+function getCategoryClass(category) {
+    if (!category) return 'category-her';
+    
+    const catLower = category.toLowerCase();
+    
+    if (catLower.includes('her') || catLower === 'for her') return 'category-her';
+    if (catLower.includes('him') || catLower === 'for him') return 'category-him';
+    if (catLower.includes('unisex')) return 'category-unisex';
+    if (catLower.includes('gift') || catLower.includes('set')) return 'category-gifts';
+    
+    return 'category-her'; // Default
+}
+
+// EXISTING PRODUCTS DATA
+const existingProducts = [
+    // For Her (8 products)
+    { name: "Rose Luxe", price: 220, category: "For Her" },
+    { name: "Golden Mist", price: 260, category: "For Her" },
+    { name: "Jasmine Bliss", price: 240, category: "For Her" },
+    { name: "Velvet Rose", price: 230, category: "For Her" },
+    { name: "Bloom Éclat", price: 82, category: "For Her" },
+    { name: "Noir Élixir", price: 150, category: "For Her" },
+    { name: "Velvet Bloom", price: 199, category: "For Her" },
+    { name: "Crystal Dawn", price: 189, category: "For Her" },
+    
+    // For Him (6 products)
+    { name: "Royal Oud", price: 280, category: "For Him" },
+    { name: "Dark Ember", price: 240, category: "For Him" },
+    { name: "Cedar Noir", price: 260, category: "For Him" },
+    { name: "Midnight Oud", price: 300, category: "For Him" },
+    { name: "Golden Noir", price: 249, category: "For Him" },
+    
+    // Unisex (EXACTLY 4 products)
+    { name: "Amber Cloud", price: 230, category: "Unisex" },
+    { name: "White Suede", price: 210, category: "Unisex" },
+    { name: "Citrus Bloom", price: 200, category: "Unisex" },
+    { name: "Sandalwood Mist", price: 250, category: "Unisex" },
+    
+    // Gift Sets (EXACTLY 4 products)
+    { name: "Luxury Duo Set", price: 350, category: "Gift Sets" },
+    { name: "Royal Premium Box", price: 420, category: "Gift Sets" },
+    { name: "Golden Essence Set", price: 380, category: "Gift Sets" },
+    { name: "Elite Perfume Box", price: 450, category: "Gift Sets" }
+];
+
+// LOAD EXISTING PRODUCTS TO DATABASE
+async function loadExistingProducts() {
+    if (!confirm(`Load all website products to database?\n\n• For Her: 8 products\n• For Him: 5 products\n• Unisex: 4 products\n• Gift Sets: 4 products\n\nTotal: 21 products`)) {
+        return;
+    }
+    
+    showLoading();
+    
+    let addedCount = 0;
+    let skippedCount = 0;
+    let failedCount = 0;
+    
+    try {
+        // Load current products to check duplicates
+        await loadProducts();
+        
+        for (const product of existingProducts) {
+            try {
+                // Check if product already exists
+                const exists = allProducts.some(p => 
+                    p.name.toLowerCase() === product.name.toLowerCase()
+                );
+                
+                if (exists) {
+                    console.log(`Skipping existing: ${product.name}`);
+                    skippedCount++;
+                    continue;
+                }
+                
+                // Add to database
+                const response = await fetch(`${API_URL}/api/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: product.name,
+                        price: product.price,
+                        category: product.category,
+                        description: `${product.name} - Premium fragrance`
+                    })
+                });
+                
+                if (response.ok) {
+                    const newProduct = await response.json();
+                    allProducts.push(newProduct);
+                    addedCount++;
+                    console.log(`Added: ${product.name}`);
+                } else {
+                    const errorText = await response.text();
+                    console.error(`Failed to add ${product.name}: ${errorText}`);
+                    failedCount++;
+                }
+                
+                // Small delay to avoid overwhelming server
+                await new Promise(resolve => setTimeout(resolve, 50));
+                
+            } catch (error) {
+                console.error(`Error adding ${product.name}:`, error);
+                failedCount++;
+            }
+        }
+        
+        // Update UI
+        renderProducts();
+        updateStatistics(allProducts);
+        
+        let message = '';
+        if (addedCount > 0) message += `✅ Added ${addedCount} new products\n`;
+        if (skippedCount > 0) message += `Skipped ${skippedCount} existing products\n`;
+        if (failedCount > 0) message += `❌ Failed to add ${failedCount} products`;
+        
+        if (message) {
+            alert(message);
+        } else {
+            alert('All products already exist in database.');
+        }
+        
+    } catch (error) {
+        console.error('Error loading existing products:', error);
+        showAlert('Failed to load products. Check backend connection.', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// EDIT PRODUCT 
+async function editProduct(id, name) {
+    try {
+        const response = await fetch(`${API_URL}/api/products/${id}`);
+        if (!response.ok) {
+            throw new Error('Product not found');
+        }
+        
+        const product = await response.json();
+        openPopup(product);
+        
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        showAlert(`Cannot edit "${name}": ${error.message}`, 'error');
+    }
+}
+
+// SAVE PRODUCT (CREATE OR UPDATE) 
+async function saveProduct() {
+    const name = document.getElementById('pname').value.trim();
+    const price = parseFloat(document.getElementById('pprice').value);
+    const category = document.getElementById('pcategory').value;
+    
+    // Validation
+    if (!name) {
+        showAlert('Product name is required!', 'error');
+        return;
+    }
+    
+    if (!price || price <= 0 || isNaN(price)) {
+        showAlert('Please enter a valid price!', 'error');
+        return;
+    }
+    
+    if (!category) {
+        showAlert('Please select a category!', 'error');
+        return;
+    }
+    
+    const productData = {
+        name,
+        price,
+        category,
+        description: `${name} - Premium fragrance`
+    };
+    
+    showLoading();
+    
+    try {
+        let response;
+        let endpoint;
+        
+        if (isEditMode && currentProductId) {
+            // UPDATE
+            endpoint = `${API_URL}/api/products/${currentProductId}`;
+            response = await fetch(endpoint, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productData)
+            });
+        } else {
+            // CREATE
+            endpoint = `${API_URL}/api/products`;
+            response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productData)
+            });
+        }
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Server error (${response.status}): ${errorText}`);
+        }
+        
+        const result = await response.json();
+        
+        if (isEditMode) {
+            // Update in local array
+            const index = allProducts.findIndex(p => p._id === currentProductId || p.id === currentProductId);
+            if (index !== -1) {
+                allProducts[index] = result;
+            }
+        } else {
+            // Add to local array
+            allProducts.push(result);
+        }
+        
+        closePopup();
+        renderProducts();
+        updateStatistics(allProducts);
+        showAlert(isEditMode ? 'Product updated successfully!' : 'Product added successfully!');
+        
+    } catch (error) {
+        console.error('Error saving product:', error);
+        showAlert(`Failed to save product: ${error.message}`, 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// CLOSE POPUPS WHEN CLICKING OUTSIDE
+document.getElementById('popup').addEventListener('click', e => {
+    if(e.target.id === 'popup') closePopup();
+});
+
+document.getElementById('deleteModal').addEventListener('click', e => {
+    if(e.target.id === 'deleteModal') closeDeleteModal();
+});
+
+// LOAD PRODUCTS ON PAGE LOAD
+document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
+</body>
+</html>

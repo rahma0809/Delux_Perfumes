@@ -1,60 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/user');
+const userController = require('../controllers/userController');
+
+// ===============================
+//  USER ROUTES (Controller Based)
+// ===============================
 
 // Create a new user
-router.post('/', async (req, res) => {
-    const { name, email, password } = req.body;
-    try {
-        const newUser = new User({ name, email, password });
-        await newUser.save();
-        res.status(201).json(newUser);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
+router.post('/', userController.createUser);
 
 // Get all users
-router.get('/', async (req, res) => {
-    try {
-        const users = await User.find();
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+router.get('/', userController.getUsers);
 
 // Get a user by ID
-router.get('/:id', async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json({ error: 'User not found' });
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+router.get('/:id', userController.getUserById);
 
 // Update a user
-router.put('/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!user) return res.status(404).json({ error: 'User not found' });
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+router.put('/:id', userController.updateUser);
 
 // Delete a user
-router.delete('/:id', async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) return res.status(404).json({ error: 'User not found' });
-        res.json({ message: 'User deleted' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+router.delete('/:id', userController.deleteUser);
 
 module.exports = router;

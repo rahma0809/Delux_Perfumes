@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Users - Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* User Management Styles */
+    .action-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 0;
+        background: white;
+        padding: 20px;
+        border-radius: var(--radius);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .search-box {
+        position: relative;
+        width: 300px;
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 12px 40px 12px 15px;
+        border: 2px solid var(--light-gray);
+        border-radius: 25px;
+        background: var(--off-white);
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+    
+    .search-box input:focus {
+        outline: none;
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(212, 169, 106, 0.2);
+    }
+    
+    .search-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent);
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .add-btn {
+        padding: 12px 25px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+    }
+    
+    .add-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(157, 46, 51, 0.2);
+    }
+    
+    .update-btn {
+        padding: 12px 25px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 15px;
+    }
+    
+    .update-btn:hover {
+        background: #2d4738;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(64, 94, 76, 0.3);
+    }
+    
+    /* User Stats */
+    .user-stats {
+        margin-bottom: 25px;
+    }
+    
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: var(--radius);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        text-align: center;
+        max-width: 300px;
+    }
+    
+    .stat-number {
+        font-size: 42px;
+        font-weight: bold;
+        color: var(--primary-dark);
+        display: block;
+        margin: 10px 0;
+    }
+    
+    .stat-label {
+        color: var(--accent);
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    /* Table Styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    th {
+        background: var(--secondary);
+        color: var(--dark);
+        padding: 18px 15px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 16px;
+        border-bottom: 2px solid var(--light-gray);
+    }
+    
+    td {
+        padding: 16px 15px;
+        border-bottom: 1px solid var(--light-gray);
+        color: #555;
+        vertical-align: middle;
+    }
+    
+    tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    tr:last-child td {
+        border-bottom: none;
+    }
+    
+    .action-cell {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .btn-edit {
+        padding: 8px 20px;
+        background: #1e5f8a;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+    
+    .btn-edit:hover {
+        background: #154360;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(30, 95, 138, 0.3);
+    }
+    
+    .btn-delete {
+        padding: 8px 20px;
+        background: #c62828;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+    
+    .btn-delete:hover {
+        background: #b71c1c;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(198, 40, 40, 0.3);
+    }
+    
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(29, 29, 29, 0.8);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 450px; 
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        animation: modalSlide 0.3s ease;
+        margin: 20px;
+    }
+    
+    @keyframes modalSlide {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--light-gray);
+    }
+    
+    .modal-title {
+        font-size: 22px;
+        color: var(--primary);
+        margin: 0;
+    }
+    
+    .close-modal {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--dark);
+        transition: color 0.3s;
+    }
+    
+    .close-modal:hover {
+        color: var(--primary);
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--dark);
+        font-weight: 500;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid var(--light-gray);
+        border-radius: 6px;
+        background: var(--off-white);
+        font-size: 15px;
+        transition: all 0.3s;
+        box-sizing: border-box; /* Prevents overflow */
+        max-width: 100%; /* Ensures input doesn't exceed container */
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--secondary);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(212, 169, 106, 0.2);
+    }
+    
+    .modal-actions {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .btn-submit {
+        flex: 1;
+        padding: 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-submit:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+    }
+    
+    .btn-cancel {
+        flex: 1;
+        padding: 14px;
+        background: var(--light-gray);
+        color: var(--dark);
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-cancel:hover {
+        background: #d9d5ce;
+    }
+    
+    /* Update Modal Styles */
+    .update-modal-content {
+        max-width: 500px; 
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--accent);
+        background: white;
+        border-radius: var(--radius);
+        margin-top: 20px;
+    }
+    
+    .empty-state h3 {
+        color: var(--primary);
+        margin-bottom: 10px;
+    }
+    
+    .empty-state p {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: var(--dark);
+    }
+    
+    /* Loading State */
+    .loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--accent);
+    }
+    
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid var(--light-gray);
+        border-top: 4px solid var(--secondary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .action-bar {
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+        }
+        
+        .search-box {
+            width: 100%;
+        }
+        
+        .action-buttons {
+            justify-content: flex-end;
+        }
+        
+        table {
+            display: block;
+            overflow-x: auto;
+        }
+        
+        .action-cell {
+            flex-wrap: wrap;
+        }
+        
+        .modal-content {
+            padding: 20px;
+            margin: 15px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin.html">Dashboard</a>
+    <a href="products.html">Products</a>
+    <a href="orders.html">Orders</a>
+    <a href="users.html" class="active">Users</a>
+</div>
+
+<div class="main">
+    <h1 class="title">Users Management</h1>
+    
+    <!-- User Statistics - Only Total Users -->
+    <div class="user-stats">
+        <div class="stat-card">
+            <span class="stat-number" id="totalUsers">0</span>
+            <span class="stat-label">Total Users</span>
+        </div>
+    </div>
+    
+    <!-- Action Bar -->
+    <div class="action-bar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search users by name or email...">
+            <span class="search-icon">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
+        <div class="action-buttons">
+            <button class="add-btn" onclick="openAddModal()">
+                <i class="fas fa-plus"></i> Add User
+            </button>
+            <button class="update-btn" onclick="openUpdateModal()">
+                <i class="fas fa-edit"></i> Update User
+            </button>
+        </div>
+    </div>
+    
+    <!-- Users Table -->
+    <div id="usersContainer">
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="usersTableBody">
+                <!-- Users will be loaded here -->
+            </tbody>
+        </table>
+        
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <h3>No Users Found</h3>
+            <p>Start by adding your first user</p>
+            <button class="add-btn" onclick="openAddModal()" style="margin-top: 20px;">
+                <i class="fas fa-plus"></i> Add User
+            </button>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading users...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Add New User</h2>
+            <button class="close-modal" onclick="closeModal()">×</button>
+        </div>
+        <form id="userForm" onsubmit="handleSubmit(event)">
+            <input type="hidden" id="userId">
+            
+            <div class="form-group">
+                <label for="userName">Full Name *</label>
+                <input type="text" id="userName" required placeholder="Enter full name">
+            </div>
+            
+            <div class="form-group">
+                <label for="userEmail">Email Address *</label>
+                <input type="email" id="userEmail" required placeholder="Enter email address">
+            </div>
+            
+            <div class="form-group">
+                <label for="userPassword">Password *</label>
+                <input type="password" id="userPassword" required placeholder="Enter password">
+                <small style="color: var(--accent); font-size: 13px; margin-top: 5px; display: block;">
+                    Password must be at least 8 characters
+                </small>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn-submit" id="submitBtn">Add User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Update User Modal -->
+<div id="updateModal" class="modal">
+    <div class="modal-content update-modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Update User</h2>
+            <button class="close-modal" onclick="closeUpdateModal()">×</button>
+        </div>
+        <form id="updateForm" onsubmit="handleUpdateSubmit(event)">
+            <div class="form-group">
+                <label for="updateUserId">User ID *</label>
+                <input type="text" id="updateUserId" required placeholder="Enter User ID to update">
+            </div>
+            
+            <div class="form-group">
+                <label for="updateUserName">New Name</label>
+                <input type="text" id="updateUserName" placeholder="Enter new name (optional)">
+            </div>
+            
+            <div class="form-group">
+                <label for="updateUserEmail">New Email</label>
+                <input type="email" id="updateUserEmail" placeholder="Enter new email (optional)">
+            </div>
+            
+            <div class="form-group">
+                <label for="updateUserPassword">New Password</label>
+                <input type="password" id="updateUserPassword" placeholder="Enter new password (optional)">
+                <small style="color: var(--accent); font-size: 13px; margin-top: 5px; display: block;">
+                    Leave password blank to keep current password
+                </small>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeUpdateModal()">Cancel</button>
+                <button type="submit" class="btn-submit" id="updateSubmitBtn" style="background: var(--accent);">
+                    Update User
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Confirm Action</h2>
+            <button class="close-modal" onclick="closeConfirmModal()">×</button>
+        </div>
+        <p id="confirmMessage" style="color: var(--dark); line-height: 1.6;">
+            Are you sure you want to delete this user?
+        </p>
+        <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeConfirmModal()">Cancel</button>
+            <button type="button" class="btn-submit" id="confirmActionBtn" onclick="confirmAction()" 
+                    style="background: #c62828;">Delete</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // API Configuration 
+    const API_BASE_URL = 'http://localhost:3000/api';
+    
+    // State
+    let users = [];
+    let currentAction = '';
+    let currentUserId = '';
+    
+    // DOM Elements
+    const usersTableBody = document.getElementById('usersTableBody');
+    const emptyState = document.getElementById('emptyState');
+    const loadingState = document.getElementById('loadingState');
+    const searchInput = document.getElementById('searchInput');
+    const totalUsersEl = document.getElementById('totalUsers');
+    
+    // Modal Elements
+    const userModal = document.getElementById('userModal');
+    const updateModal = document.getElementById('updateModal');
+    const confirmModal = document.getElementById('confirmModal');
+    
+    // Form Elements
+    const modalTitle = document.getElementById('modalTitle');
+    const userForm = document.getElementById('userForm');
+    const updateForm = document.getElementById('updateForm');
+    
+    // Add User Form Elements
+    const userIdInput = document.getElementById('userId');
+    const userNameInput = document.getElementById('userName');
+    const userEmailInput = document.getElementById('userEmail');
+    const userPasswordInput = document.getElementById('userPassword');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Update User Form Elements
+    const updateUserIdInput = document.getElementById('updateUserId');
+    const updateUserNameInput = document.getElementById('updateUserName');
+    const updateUserEmailInput = document.getElementById('updateUserEmail');
+    const updateUserPasswordInput = document.getElementById('updateUserPassword');
+    const updateSubmitBtn = document.getElementById('updateSubmitBtn');
+    
+    // Confirmation Modal Elements
+    const confirmMessage = document.getElementById('confirmMessage');
+    const confirmActionBtn = document.getElementById('confirmActionBtn');
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        loadUsers();
+        setupEventListeners();
+        markActiveLink();
+    });
+    
+    function markActiveLink() {
+        const currentPage = window.location.pathname.split('/').pop();
+        const links = document.querySelectorAll('.sidebar a');
+        links.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    }
+    
+    function setupEventListeners() {
+        // Search functionality
+        searchInput.addEventListener('input', function(e) {
+            filterUsers(e.target.value);
+        });
+        
+        // Close modals on background click
+        window.addEventListener('click', function(e) {
+            if (e.target === userModal) closeModal();
+            if (e.target === updateModal) closeUpdateModal();
+            if (e.target === confirmModal) closeConfirmModal();
+        });
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeUpdateModal();
+                closeConfirmModal();
+            }
+        });
+    }
+    
+    // Load users from API
+    async function loadUsers() {
+        try {
+            showLoading(true);
+            const response = await fetch(`${API_BASE_URL}/users`);
+            if (!response.ok) throw new Error('Failed to fetch users');
+            
+            users = await response.json();
+            renderUsers(users);
+            updateStats(users);
+            showEmptyState(users.length === 0);
+        } catch (error) {
+            console.error('Error loading users:', error);
+            showError('Failed to load users. Please try again.');
+        } finally {
+            showLoading(false);
+        }
+    }
+    
+    // Update statistics
+    function updateStats(users) {
+        totalUsersEl.textContent = users.length;
+    }
+    
+    // Render users to table
+    function renderUsers(userList) {
+        usersTableBody.innerHTML = '';
+        
+        userList.forEach(user => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td class="action-cell">
+                    <button class="btn-edit" onclick="openEditModal('${user._id}')">
+                        Edit
+                    </button>
+                    <button class="btn-delete" onclick="openDeleteModal('${user._id}', '${user.name}')">
+                        Delete
+                    </button>
+                </td>
+            `;
+            
+            usersTableBody.appendChild(row);
+        });
+    }
+    
+    // Filter users based on search
+    function filterUsers(searchTerm) {
+        if (!searchTerm.trim()) {
+            renderUsers(users);
+            return;
+        }
+        
+        const filteredUsers = users.filter(user => 
+            user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        renderUsers(filteredUsers);
+        showEmptyState(filteredUsers.length === 0);
+    }
+    
+    // Open Add User Modal
+    function openAddModal() {
+        modalTitle.textContent = 'Add New User';
+        submitBtn.textContent = 'Add User';
+        
+        // Reset form
+        userForm.reset();
+        userIdInput.value = '';
+        userPasswordInput.required = true;
+        
+        // Clear validation
+        clearValidation();
+        
+        userModal.style.display = 'flex';
+        setTimeout(() => userNameInput.focus(), 300);
+    }
+    
+    // Open Update User Modal
+    function openUpdateModal() {
+        // Reset form
+        updateForm.reset();
+        
+        // Clear validation
+        clearUpdateValidation();
+        
+        updateModal.style.display = 'flex';
+        setTimeout(() => updateUserIdInput.focus(), 300);
+    }
+    
+    // Open Edit User Modal 
+    async function openEditModal(userId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+            if (!response.ok) throw new Error('Failed to fetch user');
+            
+            const user = await response.json();
+            
+            // Fill update form with user data
+            updateUserIdInput.value = user._id;
+            updateUserNameInput.value = user.name;
+            updateUserEmailInput.value = user.email;
+            updateUserPasswordInput.value = '';
+            
+            // Clear validation
+            clearUpdateValidation();
+            
+            updateModal.style.display = 'flex';
+            setTimeout(() => updateUserNameInput.focus(), 300);
+        } catch (error) {
+            console.error('Error loading user:', error);
+            showError('Failed to load user data.');
+        }
+    }
+    
+    // Handle Update User form submission
+    async function handleUpdateSubmit(event) {
+        event.preventDefault();
+        
+        const userId = updateUserIdInput.value.trim();
+        const newName = updateUserNameInput.value.trim();
+        const newEmail = updateUserEmailInput.value.trim();
+        const newPassword = updateUserPasswordInput.value;
+        
+        if (!userId) {
+            showError('Please enter a User ID');
+            updateUserIdInput.focus();
+            return;
+        }
+        
+        if (!newName && !newEmail && !newPassword) {
+            showError('Please enter at least one field to update (name, email, or password)');
+            return;
+        }
+        
+        // Validate email if provided
+        if (newEmail && !isValidEmail(newEmail)) {
+            showError('Please enter a valid email address');
+            updateUserEmailInput.focus();
+            return;
+        }
+        
+        // Validate password length if provided
+        if (newPassword && newPassword.length < 8) {
+            showError('Password must be at least 8 characters');
+            updateUserPasswordInput.focus();
+            return;
+        }
+        
+        const updateData = {};
+        if (newName) updateData.name = newName;
+        if (newEmail) updateData.email = newEmail;
+        if (newPassword) updateData.password = newPassword;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updateData),
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Update failed');
+            }
+            
+            const updatedUser = await response.json();
+            
+            // Clear form
+            updateForm.reset();
+            closeUpdateModal();
+            
+            // Reload users
+            loadUsers();
+            showSuccess('User updated successfully!');
+        } catch (error) {
+            console.error('Error updating user:', error);
+            showError(error.message || 'Failed to update user. Please check the User ID.');
+        }
+    }
+    
+    // Open Delete Confirmation Modal
+    function openDeleteModal(userId, userName) {
+        currentAction = 'delete';
+        currentUserId = userId;
+        
+        confirmMessage.textContent = `Are you sure you want to delete user "${userName}"? This action cannot be undone.`;
+        confirmActionBtn.textContent = 'Delete User';
+        confirmActionBtn.style.background = '#c62828';
+        
+        confirmModal.style.display = 'flex';
+    }
+    
+    // Handle Add/Edit User form submission
+    async function handleSubmit(event) {
+        event.preventDefault();
+        
+        if (!validateForm()) return;
+        
+        const userData = {
+            name: userNameInput.value.trim(),
+            email: userEmailInput.value.trim(),
+        };
+        
+        // Only include password if provided (
+        if (userPasswordInput.value) {
+            userData.password = userPasswordInput.value;
+        }
+        
+        try {
+            const userId = userIdInput.value;
+            let response;
+            
+            if (userId) {
+                // Update existing user
+                response = await fetch(`${API_BASE_URL}/users/${userId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+            } else {
+                // Create new user
+                response = await fetch(`${API_BASE_URL}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                });
+            }
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Operation failed');
+            }
+            
+            const savedUser = await response.json();
+            
+            closeModal();
+            loadUsers();
+            showSuccess(userId ? 'User updated successfully!' : 'User added successfully!');
+        } catch (error) {
+            console.error('Error saving user:', error);
+            showError(error.message || 'Failed to save user. Please try again.');
+        }
+    }
+    
+    // Confirm action (delete)
+    async function confirmAction() {
+        if (currentAction === 'delete') {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${currentUserId}`, {
+                    method: 'DELETE',
+                });
+                
+                if (!response.ok) throw new Error('Failed to delete user');
+                
+                closeConfirmModal();
+                loadUsers();
+                showSuccess('User deleted successfully!');
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                showError('Failed to delete user. Please try again.');
+            }
+        }
+        
+        // Reset state
+        currentAction = '';
+        currentUserId = '';
+    }
+    
+    // Close modals
+    function closeModal() {
+        userModal.style.display = 'none';
+        userForm.reset();
+    }
+    
+    function closeUpdateModal() {
+        updateModal.style.display = 'none';
+        updateForm.reset();
+    }
+    
+    function closeConfirmModal() {
+        confirmModal.style.display = 'none';
+        currentAction = '';
+        currentUserId = '';
+    }
+    
+    // Form validation for Add/Edit form
+    function validateForm() {
+        let isValid = true;
+        clearValidation();
+        
+        // Name validation
+        if (!userNameInput.value.trim()) {
+            showValidationError(userNameInput, 'Name is required');
+            isValid = false;
+        }
+        
+        // Email validation
+        const email = userEmailInput.value.trim();
+        if (!email) {
+            showValidationError(userEmailInput, 'Email is required');
+            isValid = false;
+        } else if (!isValidEmail(email)) {
+            showValidationError(userEmailInput, 'Please enter a valid email address');
+            isValid = false;
+        }
+        
+        // Password validation (only for new users)
+        if (!userIdInput.value && !userPasswordInput.value) {
+            showValidationError(userPasswordInput, 'Password is required for new users');
+            isValid = false;
+        } else if (userPasswordInput.value && userPasswordInput.value.length < 8) {
+            showValidationError(userPasswordInput, 'Password must be at least 8 characters');
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+    
+    // Clear validation for Add/Edit form
+    function clearValidation() {
+        const inputs = [userNameInput, userEmailInput, userPasswordInput];
+        inputs.forEach(input => {
+            input.style.borderColor = '';
+            input.style.background = '';
+            
+            // Remove error messages
+            const errorElement = input.nextElementSibling;
+            if (errorElement && errorElement.classList.contains('error-message')) {
+                errorElement.remove();
+            }
+        });
+    }
+    
+    // Clear validation for Update form
+    function clearUpdateValidation() {
+        const inputs = [updateUserIdInput, updateUserNameInput, updateUserEmailInput, updateUserPasswordInput];
+        inputs.forEach(input => {
+            input.style.borderColor = '';
+            input.style.background = '';
+        });
+    }
+    
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function showValidationError(input, message) {
+        input.style.borderColor = 'var(--primary)';
+        input.style.background = 'rgba(157, 46, 51, 0.05)';
+        
+        // Create error message element
+        let errorElement = input.nextElementSibling;
+        if (!errorElement || !errorElement.classList.contains('error-message')) {
+            errorElement = document.createElement('small');
+            errorElement.className = 'error-message';
+            errorElement.style.color = 'var(--primary)';
+            errorElement.style.display = 'block';
+            errorElement.style.marginTop = '5px';
+            errorElement.style.fontSize = '13px';
+            input.parentNode.insertBefore(errorElement, input.nextSibling);
+        }
+        errorElement.textContent = message;
+    }
+    
+    // UI Helper Functions
+    function showLoading(show) {
+        loadingState.style.display = show ? 'block' : 'none';
+        document.getElementById('usersTable').style.display = show ? 'none' : 'table';
+    }
+    
+    function showEmptyState(show) {
+        emptyState.style.display = show ? 'block' : 'none';
+        document.getElementById('usersTable').style.display = show ? 'none' : 'table';
+    }
+    
+    function showSuccess(message) {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+            font-weight: 500;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+    
+    function showError(message) {
+        // Create error toast
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+            font-weight: 500;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+    
+  
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>

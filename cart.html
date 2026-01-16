@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart — Delux Perfumes</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .cart-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url(Images/imgp18.jpg);
+      background-size: cover;
+      background-position: center;
+      opacity: 1;
+      z-index: 0;
+    }
+
+    .logo1 h2 {
+      color: white;
+      margin: 0;
+      font-family: "Playfair Display", serif;
+    }
+
+    .cart-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-link1:hover {
+      color: #b3894c;
+    }
+
+    .cart-page {
+      padding: 6rem 0;
+      background: var(--off-white);
+      min-height: 80vh;
+      font-family: var(--font-body);
+      color: var(--dark);
+    }
+
+    .cart-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: var(--spacing-xl);
+    }
+
+    .cart-list {
+      background: var(--white);
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cart-item {
+      display: flex;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+      align-items: center;
+    }
+
+    .cart-item:last-child {
+      border-bottom: 0;
+    }
+
+    .cart-item-img {
+      width: 110px;
+      height: 110px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+
+    .cart-item-meta {
+      color: var(--medium-gray);
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .cart-qty {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 6px;
+      background: var(--light-gray);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .qty-input {
+      width: 44px;
+      text-align: center;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #e6e6e6;
+      font-size: 0.95rem;
+      background: transparent;
+    }
+
+    .cart-item-price {
+      font-weight: 600;
+      font-size: 1rem;
+      min-width: 90px;
+      text-align: right;
+    }
+
+    .cart-item-actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: var(--medium-gray);
+      cursor: pointer;
+    }
+
+    .cart-summary {
+      background: linear-gradient(180deg, var(--white), #fbfaf9);
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      height: fit-content;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .summary-total {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .coupon {
+      margin-top: var(--spacing-md);
+      display: flex;
+      gap: 8px;
+    }
+
+    .coupon input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #e6e6e6;
+      background: transparent;
+    }
+
+    .coupon button {
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: none;
+      background: var(--primary);
+      color: var(--white);
+      cursor: pointer;
+    }
+
+    .checkout-btn {
+      display: block;
+      width: 100%;
+      margin-top: var(--spacing-lg);
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: none;
+      background: var(--primary);
+      color: var(--white);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: var(--spacing-lg);
+      color: var(--medium-gray);
+    }
+
+    .toast {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%) translateX(150%);
+      background: #ffffff;
+      color: #000;
+      padding: 18px 26px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.45s ease, opacity 0.45s ease;
+      z-index: 9999;
+    }
+
+    
+#successPopup {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#successPopup > div {
+    animation: slideUp 0.4s ease;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    @media (max-width: 980px) {
+      .cart-container {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-item-img {
+        width: 90px;
+        height: 90px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo1">
+          <h2>DELUX CART</h2>
+        </a>
+        <ul class="nav-menu">
+          <li><a href="index.html#home" class="nav-link">Home</a></li>
+          <li><a href="index.html#about" class="nav-link">About</a></li>
+          <li><a href="index.html#collections" class="nav-link">Collections</a></li>
+          <li><a href="index.html#offers" class="nav-link">Offers</a></li>
+          <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <div class="nav-buttons">
+          <a href="javascript:void(0);" class="nav-icon" id="searchBtn"><i class="fas fa-search"></i></a>
+          <a href="cart.html" class="nav-icon" title="My Cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count" id="headerCartCount">0</span>
+          </a>
+          <a href="#login" class="nav-icon user-icon" title="Login / Signup"><i class="fas fa-user"></i></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div id="toast" class="toast"></div>
+
+  <main class="cart-page">
+    <div class="cart-bg"></div>
+    <div class="container cart-container">
+      <div class="cart-list" id="cartList">
+        <h2 style="margin-bottom: var(--spacing-md); font-family:var(--font-heading);">Your Cart</h2>
+      </div>
+
+      <aside class="cart-summary" id="cartSummary">
+        <h3 style="margin-bottom: var(--spacing-md); font-family:var(--font-heading);">Order Summary</h3>
+
+        <div class="summary-row">
+          <div>Subtotal</div>
+          <div>AED <span id="subtotal">0.00</span></div>
+        </div>
+
+        <div class="summary-row">
+          <div>Shipping</div>
+          <div id="shipping">AED 10.00</div>
+        </div>
+
+        <div class="summary-row">
+          <div>Discount</div>
+          <div id="discount">AED 0.00</div>
+        </div>
+
+        <div class="summary-row" style="border-top:1px solid rgba(0,0,0,0.04); padding-top:12px;">
+          <div class="summary-total">Total</div>
+          <div class="summary-total">AED <span id="total">0.00</span></div>
+        </div>
+
+        <div class="coupon">
+          <input id="couponInput" type="text" placeholder="Coupon code (e.g. DELUX20)" />
+          <button id="applyCoupon">Apply</button>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+
+        <div style="margin-top:12px; font-size:0.95rem; color:var(--medium-gray);">
+          Secure checkout • Free returns within 14 days
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal"
+    style="display:none; position:fixed; 
+    top:0; left:0; width:100%; 
+    height:100%; 
+    background:rgba(0,0,0,0.5); 
+    z-index:9999; 
+    justify-content:center; 
+    align-items:center;">
+
+    <div style="background:#fff; 
+    padding:24px; border-radius:12px; 
+    width:90%; max-width:400px; 
+    position:relative;">
+
+      <span id="closeModal"
+        style="position:absolute; 
+        top:12px; right:16px; 
+        cursor:pointer; 
+        font-size:20px;">&times;</span>
+
+      <h3 style="margin-bottom:12px; 
+      font-family:var(--font-heading);">Enter Your Details</h3>
+
+      <form id="checkoutForm">
+        <input type="text" id="customerName" placeholder="Full Name" required
+          style="width:100%;
+          padding:10px;
+          margin-bottom:8px;
+          border-radius:6px;
+          border:1px solid #e6e6e6;">
+
+        <input type="email" id="customerEmail" placeholder="Email Address" required
+          style="width:100%;
+          padding:10px;
+          margin-bottom:8px;
+          border-radius:6px;
+          border:1px solid #e6e6e6;">
+
+        <input type="text" id="customerAddress" placeholder="Shipping Address" required
+
+          style="width:100%;
+          padding:10px;
+          margin-bottom:8px;
+          border-radius:6px;
+          border:1px solid #e6e6e6;">
+
+        <input type="text" id="customerPhone" placeholder="Phone Number" required
+
+          style="width:100%;
+          padding:10px;
+          margin-bottom:12px;
+          border-radius:6px;
+          border:1px solid #e6e6e6;">
+
+        <button type="submit" class="checkout-btn">Confirm Order</button>
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    (function () {
+      const cartList = document.getElementById('cartList');
+      const headerCount = document.getElementById('headerCartCount');
+      const subtotalEl = document.getElementById('subtotal');
+      const shippingEl = document.getElementById('shipping');
+      const discountEl = document.getElementById('discount');
+      const totalEl = document.getElementById('total');
+      const applyCouponBtn = document.getElementById('applyCoupon');
+      const couponInput = document.getElementById('couponInput');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      const checkoutModal = document.getElementById('checkoutModal');
+      const closeModal = document.getElementById('closeModal');
+      const checkoutForm = document.getElementById('checkoutForm');
+
+      const SHIPPING = 10;
+      const API_URL = 'http://localhost:3000';
+
+      let discount = 0;
+      let couponApplied = false;
+
+      function format(n) { return Number(n).toFixed(2); }
+
+      function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+
+      function renderCart() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cartList.innerHTML = '<h2 style="margin-bottom: var(--spacing-md); font-family:var(--font-heading);">Your Cart</h2>';
+
+        if (cart.length === 0) {
+          cartList.innerHTML += '<div class="empty-cart">Your cart is empty.</div>';
+          subtotalEl.textContent = format(0);
+          shippingEl.textContent = 'AED ' + format(0);
+          discountEl.textContent = 'AED ' + format(0);
+          totalEl.textContent = format(0);
+          headerCount.textContent = 0;
+          return;
+        }
+
+        cart.forEach((item, index) => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'cart-item';
+          itemEl.dataset.price = item.price;
+          itemEl.dataset.id = index;
+          itemEl.dataset.image = item.image;
+          itemEl.innerHTML = `
+                <div class="cart-item-img" style="background-image: url('${item.image || "Images/default.png"}');"></div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-meta">${item.size || '50ml — Unisex'}</div>
+                    <div class="cart-item-actions">
+                        <div class="cart-qty" aria-label="Quantity selector">
+                            <div class="qty-btn" data-action="decrease">–</div>
+                            <input class="qty-input" type="number" min="1" value="${item.qty || 1}" />
+                            <div class="qty-btn" data-action="increase">+</div>
+                        </div>
+                        <button class="remove-btn" aria-label="Remove item">Remove</button>
+                    </div>
+                </div>
+                <div class="cart-item-price">AED <span class="line-total">${format(item.price * (item.qty || 1))}</span></div>
+            `;
+          cartList.appendChild(itemEl);
+        });
+
+        initCartEvents();
+      }
+
+      function initCartEvents() {
+        const items = cartList.querySelectorAll('.cart-item');
+        items.forEach((item, index) => {
+          const qtyInput = item.querySelector('.qty-input');
+          const price = parseFloat(item.dataset.price);
+          const removeBtn = item.querySelector('.remove-btn');
+
+          item.querySelectorAll('.qty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              let val = parseInt(qtyInput.value);
+              val = btn.dataset.action === 'increase' ? val + 1 : Math.max(1, val - 1);
+              qtyInput.value = val;
+              updateLineTotal(item, val, price);
+              saveCart();
+              recalcTotals();
+            });
+          });
+
+          qtyInput.addEventListener('change', () => {
+            let val = parseInt(qtyInput.value) || 1;
+            qtyInput.value = val;
+            updateLineTotal(item, val, price);
+            saveCart();
+            recalcTotals();
+          });
+
+          removeBtn.addEventListener('click', () => {
+            removeItem(index);
+            showToast('Item removed from cart.');
+          });
+        });
+
+        recalcTotals();
+      }
+
+      function updateLineTotal(item, qty, price) {
+        item.querySelector('.line-total').textContent = format(price * qty);
+      }
+
+      function removeItem(index) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+      }
+
+      function recalcTotals() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let subtotal = 0;
+        let totalCount = 0;
+        cart.forEach(item => {
+          subtotal += item.price * (item.qty || 1);
+          totalCount += (item.qty || 1);
+        });
+
+        discount = couponApplied ? subtotal * 0.2 : 0;
+        const total = subtotal + SHIPPING - discount;
+
+        subtotalEl.textContent = format(subtotal);
+        shippingEl.textContent = 'AED ' + format(SHIPPING);
+        discountEl.textContent = 'AED ' + format(discount);
+        totalEl.textContent = format(total);
+        headerCount.textContent = totalCount;
+      }
+
+      function saveCart() {
+        const items = cartList.querySelectorAll('.cart-item');
+        let cart = [];
+        items.forEach(item => {
+          const name = item.querySelector('.cart-item-name').textContent;
+          const price = parseFloat(item.dataset.price);
+          const qty = parseInt(item.querySelector('.qty-input').value);
+          const image = item.dataset.image || "Images/default.png";
+          cart.push({ name, price, qty, image });
+        });
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+
+      // Coupon
+      applyCouponBtn.addEventListener('click', () => {
+        const code = couponInput.value.trim().toUpperCase();
+        if (code === 'DELUX20' && !couponApplied) {
+          couponApplied = true;
+          recalcTotals();
+          showToast('Coupon applied: 20% off!');
+        } else if (couponApplied) {
+          showToast('Coupon already applied.');
+        } else {
+          showToast('Invalid coupon code.');
+        }
+      });
+
+      // Checkout modal
+      checkoutBtn.addEventListener('click', () => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cart.length === 0) {
+          showToast('Your cart is empty!');
+          return;
+        }
+        checkoutModal.style.display = 'flex';
+      });
+
+      closeModal.addEventListener('click', () => checkoutModal.style.display = 'none');
+
+      checkoutModal.addEventListener('click', (e) => {
+        if (e.target === checkoutModal) checkoutModal.style.display = 'none';
+      });
+
+      // Submits order to admin panel
+checkoutForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('customerName').value.trim();
+    const email = document.getElementById('customerEmail').value.trim();
+    const address = document.getElementById('customerAddress').value.trim();
+    const phone = document.getElementById('customerPhone').value.trim();
+
+    if (!name || !email || !address || !phone) {
+        showCenterPopup("Please fill all fields.", 3000,"errorPopup");
+        return;
+    }
+
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        showCenterPopup("Your cart is empty.", 3000,"errorPopup");
+        return;
+    }
+
+    // Disable the submit button to prevent multiple clicks
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Processing...';
+    submitBtn.disabled = true;
+
+    const subtotal = parseFloat(subtotalEl.textContent);
+    const total = parseFloat(totalEl.textContent);
+
+    // Prepare order payload 
+    const orderPayload = {
+        user: email,
+        items: cart.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.qty || 1,
+            image: item.image
+        })),
+        totalPrice: total,  
+        shippingAddress: address,
+        phone: phone,
+        paymentMethod: "Cash on Delivery",
+        customerName: name 
+    };
+
+    console.log('Sending order payload:', orderPayload); 
+
+    try {
+      
+        
+        const response = await fetch(`${API_URL}/orders`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(orderPayload)
+        });
+
+        console.log('Response status:', response.status);
+        
+        const result = await response.json();
+        
+        console.log('Backend response:', result);
+        
+        if (!response.ok) {
+            throw new Error(result.error || `Order failed (${response.status})`);
+        }
+
+        // Clear cart + modal
+        localStorage.removeItem('cart');
+        checkoutModal.style.display = 'none';
+
+        // Clear form fields
+        document.getElementById('customerName').value = '';
+        document.getElementById('customerEmail').value = '';
+        document.getElementById('customerAddress').value = '';
+        document.getElementById('customerPhone').value = '';
+
+        // Show SUCCESS MESSAGE that stays until manually closed
+        const successHTML = `
+    <div style="position: relative; max-width: 450px; width: 90vw;">
+        <button onclick="this.closest('#successPopup').remove()" 
+                style="position: absolute; 
+                top: 10px; 
+                right: 10px; 
+                background: none; 
+                border: none; font-size: 24px; 
+                cursor: pointer; 
+                color: #666;">&times;</button>
+        
+        <div style="text-align: center; padding: 30px 20px;">
+            <div style="font-size: 5rem; margin-bottom: 15px; color: #28a745;">✓</div>
+            <h2 style="margin-bottom: 10px; color: #155724; font-size: 1.8rem;">Order Confirmed!</h2>
+            
+            <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <p style="margin: 8px 0; color: #155724;">
+                    <strong>Order ID:</strong> ${result.order.id}
+                </p>
+                <p style="margin: 8px 0; color: #155724;">
+                    <strong>Total Amount:</strong> AED ${result.order.total ? result.order.total.toFixed(2) : result.order.totalPrice.toFixed(2)}
+                </p>
+                <p style="margin: 8px 0; color: #155724;">
+                    <strong>Shipping to:</strong> ${address}
+                </p>
+            </div>
+            
+            <p style="color: #666; margin-bottom: 10px; font-size: 0.95rem;">
+                A confirmation email has been sent to <strong>${email}</strong>
+            </p>
+            
+            <p style="color: #666; margin-bottom: 25px; font-size: 0.9rem;">
+                Estimated delivery: 3-5 business days
+            </p>
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="window.location.href='index.html'" 
+                        style="padding: 12px 24px; 
+                        background: #28a745; 
+                        color: white; 
+                        border: none; 
+                        border-radius: 6px; 
+                        cursor: pointer; 
+                        font-weight: 600; flex: 1;">
+                    Continue Shopping
+                </button>
+                <button onclick="printOrderDetails()" 
+                        style="padding: 12px 24px; 
+                        background: #6c757d; 
+                        color: white; border: none; 
+                        border-radius: 6px; 
+                        cursor: pointer; 
+                        font-weight: 600; 
+                        flex: 1;">
+                    Print Receipt
+                </button>
+            </div>
+            
+            <p style="margin-top: 20px; color: #999; font-size: 0.85rem;">
+                Thank you for shopping with Delux Perfumes!
+            </p>
+        </div>
+    </div>
+`;
+
+        // Create and show permanent success popup
+        const successPopup = document.createElement('div');
+        successPopup.id = 'successPopup';
+        successPopup.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+`;
+
+        successPopup.innerHTML = successHTML;
+        document.body.appendChild(successPopup);
+
+        // Adds print function to window
+        window.printOrderDetails = function() {
+            const printContent = `
+        <div style="padding: 20px; font-family: Arial, sans-serif;">
+            <h1 style="color: #28a745; text-align: center;">Delux Perfumes</h1>
+            <h2 style="text-align: center;">Order Confirmation</h2>
+            <hr>
+            <p><strong>Order ID:</strong> ${result.order.id}</p>
+            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+            <p><strong>Customer:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Shipping Address:</strong> ${address}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <hr>
+            <p><strong>Total Amount:</strong> AED ${result.order.total ? result.order.total.toFixed(2) : result.order.totalPrice.toFixed(2)}</p>
+            <hr>
+            <p style="margin-top: 30px; text-align: center;">Thank you for your purchase!</p>
+        </div>
+    `;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 250);
+        };
+
+        renderCart();
+
+    } catch (err) {
+        console.error("Order error:", err);
+        
+        // Re-enable the submit button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        
+        // Show more detailed error
+        let errorMsg = err.message;
+        if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
+            errorMsg = 'Cannot connect to server. Please check if backend is running.';
+        }
+        
+        showCenterPopup(`
+    <div style="font-size:3rem; margin-bottom:10px; color:#dc3545;">✗</div>
+    <h2 style="margin-bottom:8px; color:#721c24;">Order Failed</h2>
+    <p style="color:#721c24;">${errorMsg}</p>
+    <button onclick="hideCenterPopup('errorPopup')" style="padding:10px 20px; 
+    margin-top:10px; 
+    background:#dc3545;
+    color:white;
+    border:none; 
+    border-radius:6px; cursor:pointer;">
+        Try Again
+    </button>
+`, 8000, "errorPopup"); 
+    }
+});
+
+      //  showCenterPopup function:
+function showCenterPopup(message, duration = null, customId = "tempPopup") {
+    let popup = document.getElementById(customId);
+    if (!popup) {
+        popup = document.createElement('div');
+        popup.id = customId;
+        popup.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 28px 35px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 99999;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+        `;
+        document.body.appendChild(popup);
+    }
+
+    popup.innerHTML = message;
+    popup.style.display = "block";
+    
+    // Auto-hide after timeout if duration is provided
+    if (duration && typeof duration === 'number') {
+        setTimeout(() => {
+            popup.style.display = "none";
+        }, duration);
+    }
+}
+
+// hideCenterPopup function:
+function hideCenterPopup(id = "tempPopup") {
+    const popup = document.getElementById(id);
+    if (popup) popup.style.display = "none";
+}
+
+      function showSuccessMessage(order) {
+        const successDiv = document.createElement('div');
+        successDiv.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:30px; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.3); z-index:10000; text-align:center; max-width:400px;';
+
+        successDiv.innerHTML = `
+          <div style="font-size: 4rem; 
+          color: #28a745; 
+          margin-bottom: 15px;">
+          </div>
+
+          <h2 style="color: #155724; 
+          margin-bottom: 10px;">Order Confirmed!
+          </h2>
+          <p style="color: #155724; 
+          margin-bottom: 8px;">Order ID: <strong>${order.id}</strong></p>
+          <p style="color: #155724; 
+          margin-bottom: 8px;">Total: <strong>AED ${order.total.toFixed(2)}</strong></p>
+          <p style="color: #666; 
+          font-size: 0.95rem; 
+          margin-bottom: 20px;">Thank you for your purchase!</p>
+          <button onclick="this.parentElement.remove()" 
+          style="padding: 12px 24px; 
+          background: #28a745; 
+          color: white; 
+          border: none; 
+          border-radius: 
+          6px; cursor: pointer; 
+          font-weight: 600;">Continue Shopping</button>
+        `;
+
+        document.body.appendChild(successDiv);
+      }
+
+      document.addEventListener('DOMContentLoaded', renderCart);
+    })();
+  </script>
+
+</body>
+
+</html>

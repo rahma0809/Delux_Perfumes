@@ -1,0 +1,41 @@
+[
+  {
+    "id": "#176856291",
+    "customer": "rahma",
+    "email": "abc@gmail.com",
+    "phone": "12467",
+    "products": "Citrus Bloom x1, Rose Luxe x1, Golden Essence Set x1",
+    "productDetails": [
+      {
+        "name": "Citrus Bloom",
+        "price": 200,
+        "quantity": 1,
+        "image": "Images/imgp23.png"
+      },
+      {
+        "name": "Rose Luxe",
+        "price": 220,
+        "quantity": 1,
+        "image": "Images/imgp11.png"
+      },
+      {
+        "name": "Golden Essence Set",
+        "price": 120,
+        "quantity": 1,
+        "image": "Images/imgp27.png"
+      }
+    ],
+    "subtotal": 540,
+    "shipping": 10,
+    "discount": 0,
+    "total": 550,
+    "status": "Cancelled",
+    "paymentMethod": "Cash on Delivery",
+    "shippingAddress": "123xyz",
+    "date": "2026-01-16",
+    "time": "03:28 PM",
+    "timestamp": 1768562918182,
+    "createdAt": "2026-01-16T11:28:38.182Z",
+    "updatedAt": "2026-01-16T11:36:20.316Z"
+  }
+]

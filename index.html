@@ -4,12 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DELUX PERFUMES  | Where Fragrance Meets Elegance.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
-    <link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"  integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>  
+    <link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />  
     <link rel="stylesheet" href="styles.css"/>   
-</head>  
+</head>
 <body>  
     <!-- Header & Navigation -->  
     <header class="header">   
@@ -40,50 +38,58 @@
          
                     <a href="cart.html" class="nav-icon" title="My Cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-count">0</span>
+                        <span id="cartCount" class="cart-count">0</span>
+
                     </a>
          
                     <a href="login.html" class="nav-icon user-icon" title="Login / Signup">     
                         <i class="fas fa-user"></i>     
+                        <span id="usernameDisplay" class="username-text"></span>
                     </a>
                 </div>
         
-                <div class="mobile-toggle">      
-                    <span></span>     
-                    <span></span>     
-                    <span></span>      
-                </div>  
+                <div class="mobile-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </div>
             </nav>  
         </div> 
     </header>
     
     <!-- main Section -->
-    <section class="hero" id="home">
+    <section class="main" id="home">
         
         <div class="container">
-            <div class="hero-content">
-                <p class="hero-subtitle">Where Scent Becomes Art</p>
-                <h1 class="hero-title">
+            <div class="main-content">
+                <p class="main-subtitle">Where Scent Becomes Art</p>
+                <h1 class="main-title">
                     The Essence <span>of Luxury</span> 
                 </h1>
    
-                <p class="hero-description">
+                <p class="main-description">
                     Discover a world of exquisite fragrances made from the rarest essences.
                     Elevate your presence with scents that define sophistication and allure.
                 </p>
    
-                <div class="hero-buttons">
-                    <a href="#menu" class="btn btn-secondary">Explore Collection</a>
-                    <a href="#collection" class="btn hero-btn-outline">Shop Now</a>
+                <div class="main-buttons">
+                    <a href="explore.html"class="btn btn-secondary">Explore Collection</a>
+                    <a href="#collection" class="btn main-btn-outline">Shop Now</a>
                 </div>
             </div>
         </div>
    
-        <div class="hero-scroll">
+        <div class="main-scroll">
             <i class="fas fa-chevron-down"></i>
             Scroll Down
         </div>
     </section> 
+
+   
+    <div id="welcomePopup" class="popup">
+
+    </div>
 
     <!-- About Section -->
     <section class="about" id="about">
@@ -167,62 +173,62 @@
 
     <!-- Collection Section -->
 
-    <section class="menu" id="collection">
+    <section class="products" id="collection">
         <div class="container">
-            <div class="menu-header">
-                <p class="menu-subtitle">Our Collection</p>
-                <h2 class="menu-title">Discover Your Signature Scent</h2>
+            <div class="products-header">
+                <p class="products-subtitle">Our Collection</p>
+                <h2 class="products-title">Discover Your Signature Scent</h2>
       
-                <p class="menu-description">
+                <p class="products-description">
                     Explore our curated range of luxury fragrances — each designed to   
                     captivate, inspire, and express individuality. From bold masculine
                     notes to soft feminine florals, every scent tells a story. 
                 </p>
             </div>
     
-            <div class="menu-tabs">    
-                <div class="menu-tab active">All</div>   
-                <div class="menu-tab">For Her</div>     
-                <div class="menu-tab">For Him</div>   
-                <div class="menu-tab">Unisex</div>     
-                <div class="menu-tab">Gift Sets</div>
+            <div class="products-tabs">    
+                <div class="products-tab active">All</div>   
+                <div class="products-tab" onclick="location.href='explore.html#for-her'">For Her</div>   
+                <div class="products-tab" onclick="location.href='explore.html#for-him'">For Him</div>   
+                <div class="products-tab" onclick="location.href='explore.html#unisex'">Unisex</div>     
+                <div class="products-tab" onclick="location.href='explore.html#gift-sets'">Gift Sets</div>
             </div>
 
-    
-            <div class="menu-grid">  
+            <div class="products-grid">  
                 <!-- Perfume 1 -->
-                <div class="menu-item">      
-                    <div class="menu-item-img" style="background-image: url('Images/imgp3.jpg');"></div>      
-                    <div class="menu-item-badge">Bestseller</div>     
-                    <div class="menu-item-content">       
-                        <p class="menu-item-category">For Her</p>        
-                        <h3 class="menu-item-name">Velvet Rose</h3>        
-                        <p class="menu-item-description">         
+                <div class="products-item">      
+                    <div class="products-item-img" style="background-image: url('Images/imgp7.png');"></div>      
+                    <div class="products-item-badge">Bestseller</div>     
+                    <div class="products-item-content">       
+                        <p class="products-item-category">For Her</p>        
+                        <h3 class="products-item-name">Velvet Rose</h3>        
+                        <p class="products-item-description">         
                             A romantic blend of damask rose, vanilla, and amber for timeless elegance.        
                         </p>
          
-                        <div class="menu-item-bottom">        
-                            <div class="menu-item-price">79.00 Aed</div>        
-                            <div class="menu-item-btn">            
-                                <i class="fas fa-plus"></i>         
-                            </div>     
+                        <div class="products-item-bottom">        
+                            <div class="products-item-price">79.00 Aed</div>        
+                            <div class="products-item-btn" onclick="addToCart('Velvet Rose', 79, 'Images/imgp7.png')">
+                                <i class="fas fa-plus"></i>
+                            </div>
+     
                         </div>   
                     </div>
                 </div>
  
                 <!-- Perfume 2 --> 
-                <div class="menu-item">  
-                    <div class="menu-item-img" style="background-image: url('Images/imgp5.jpg');"></div> 
-                    <div class="menu-item-content">   
-                        <p class="menu-item-category">For Him</p> 
-                        <h3 class="menu-item-name">Midnight Oud</h3>  
-                        <p class="menu-item-description">         
+                <div class="products-item">  
+                    <div class="products-item-img" style="background-image: url('Images/imgp5.jpg');"></div> 
+                    <div class="products-item-content">   
+                        <p class="products-item-category">For Him</p> 
+                        <h3 class="products-item-name">Midnight Oud</h3>  
+                        <p class="products-item-description">         
                             Rich oud wood with smoky leather and musk for a powerful, confident aura.        
                         </p>
         
-                        <div class="menu-item-bottom">      
-                            <div class="menu-item-price">89.00 Aed</div>     
-                            <div class="menu-item-btn">    
+                        <div class="products-item-bottom">      
+                            <div class="products-item-price">89.00 Aed</div>     
+                            <div class="products-item-btn" onclick="addToCart('Midnight Oud', 89, 'Images/imgp5.jpg')">   
                                 <i class="fas fa-plus"></i>   
                             </div>         
                         </div>   
@@ -231,19 +237,18 @@
 
       
                 <!-- Perfume 3 -->
-                <div class="menu-item"> 
-                    <div class="menu-item-img" style="background-image: url('Images/imgp13.png');"></div>
-                    <div class="menu-item-badge">New</div>
-                    <div class="menu-item-content">
-                        <p class="menu-item-category">Unisex</p>
-                        <h3 class="menu-item-name">Amber Horizon</h3>
-                        <p class="menu-item-description">        
+                <div class="products-item"> 
+                    <div class="products-item-img" style="background-image: url('Images/imgp13.png');"></div>
+                    <div class="products-item-badge">New</div>
+                    <div class="products-item-content">
+                        <p class="products-item-category">Unisex</p>
+                        <h3 class="products-item-name">Amber Horizon</h3>
+                        <p class="products-item-description">        
                             Warm amber and smoky cedar blended with hints of citrus for everyone.       
                         </p>       
-                        <div class="menu-item-bottom">      
-                            <div class="menu-item-price">95.00 Aed</div>
-                            
-                            <div class="menu-item-btn">        
+                        <div class="products-item-bottom">      
+                            <div class="products-item-price">95.00 Aed</div>
+                            <div class="products-item-btn" onclick="addToCart('Amber Horizon', 95, 'Images/imgp13.png')">
                                 <i class="fas fa-plus"></i>
                             </div>
                         </div>
@@ -252,18 +257,18 @@
 
       
                 <!-- Perfume 4 -->  
-                <div class="menu-item">
-                    <div class="menu-item-img" style="background-image: url('Images/imgp7.png');"></div>
+                <div class="products-item">
+                    <div class="products-item-img" style="background-image: url('Images/imgp27.png');"></div>
 
-                    <div class="menu-item-content">    
-                        <p class="menu-item-category">Gift Sets</p>   
-                        <h3 class="menu-item-name">Golden Essence Set</h3>   
-                        <p class="menu-item-description">   
+                    <div class="products-item-content">    
+                        <p class="products-item-category">Gift Sets</p>   
+                        <h3 class="products-item-name">Golden Essence Set</h3>   
+                        <p class="products-item-description">   
                             A premium gift box featuring our top-selling perfumes in a deluxe package.       
                         </p>      
-                        <div class="menu-item-bottom">         
-                            <div class="menu-item-price">120.00 Aed</div>        
-                            <div class="menu-item-btn">         
+                        <div class="products-item-bottom">         
+                            <div class="products-item-price">120.00 Aed</div>        
+                            <div class="products-item-btn" onclick="addToCart('Golden Essence Set', 120, 'Images/imgp27.png')">                                   
                                 <i class="fas fa-plus"></i>        
                             </div>   
                         </div>   
@@ -272,17 +277,18 @@
 
       
                 <!-- Perfume 5 -->   
-                <div class="menu-item">   
-                    <div class="menu-item-img" style="background-image: url('Images/imgp1.png');"></div>    
-                    <div class="menu-item-content">     
-                        <p class="menu-item-category">For Her</p>     
-                        <h3 class="menu-item-name">Bloom Éclat</h3>     
-                        <p class="menu-item-description">          
+                <div class="products-item">   
+                    <div class="products-item-img" style="background-image: url('Images/imgp1.png');"></div>    
+                    <div class="products-item-content">     
+                        <p class="products-item-category">For Her</p>     
+                        <h3 class="products-item-name">Bloom Éclat</h3>     
+                        <p class="products-item-description">          
                             Bright jasmine and white florals with hints of pear and musk — radiant and fresh.        
                         </p>         
-                        <div class="menu-item-bottom">        
-                            <div class="menu-item-price">82.00 Aed</div>        
-                            <div class="menu-item-btn">         
+                        <div class="products-item-bottom">        
+                            <div class="products-item-price">82.00 Aed</div>
+                            <div class="products-item-btn" onclick="addToCart('Bloom Éclat', 82, 'Images/imgp1.PNG')">      
+        
                                 <i class="fas fa-plus"></i>        
                             </div>       
                         </div>      
@@ -291,122 +297,132 @@
 
      
                 <!-- Perfume 6 -->    
-                <div class="menu-item">     
-                    <div class="menu-item-img" style="background-image: url('Images/imgp9.jpg');"></div>     
-                    <div class="menu-item-badge">Limited</div>     
-                    <div class="menu-item-content">     
-                        <p class="menu-item-category">Limited Edition</p>      
-                        <h3 class="menu-item-name">Noir Élixir</h3>      
-                        <p class="menu-item-description">       
+                <div class="products-item">
+                    <button class="wishlist-btn" onclick="toggleWishlist(this, 'Noir Élixir', 150)">
+       
+                        <i class="fas fa-heart"></i>
+    
+                    </button>
+                        
+                    <div class="products-item-img" style="background-image: url('Images/imgp9.jpg');"></div>     
+                    <div class="products-item-badge">Limited</div>     
+                    <div class="products-item-content">     
+                        <p class="products-item-category">Limited Edition</p>      
+                        <h3 class="products-item-name">Noir Élixir</h3>      
+                        <p class="products-item-description">       
                             A rare blend of black orchid, patchouli, and ambergris — pure luxury in a bottle.
                         </p>     
-                        <div class="menu-item-bottom">
-                            <div class="menu-item-price">150.00 Aed</div>
+                        <div class="products-item-bottom">
+                            <div class="products-item-price">150.00 Aed</div>
        
-                            <div class="menu-item-btn">      
+                            <div class="products-item-btn" onclick="addToCart('Noir Élixir', 150, 'Images/imgp9.jpg')">      
                                 <i class="fas fa-plus"></i>     
                             </div>      
                         </div>   
+                        
                     </div>
                 </div>
             </div>
    
             <div class="text-center mt-5">
-                <a href="#" class="btn btn-primary">Explore Full Collection</a>
+                <a href="explore.html" class="btn btn-primary">Explore Full Collection</a>
+                <a href="scent.html" class="btn btn-primary">Find My Scent</a>
             </div>
         </div>
+        <div id="toast" class="toast"></div>
+
     </section>
 
     <!-- Special Section -->
-    <section class="special" id="offers">
-        <div class="container special-container">
-            <div class="special-header">
-                <p class="special-subtitle">Exclusive Offers</p>
-                <h2 class="special-title">Limited Edition Fragrance Deals</h2>
-                <p class="special-description">
+    <section class="limited" id="offers">
+        <div class="container limited-container">
+            <div class="limited-header">
+                <p class="limited-subtitle">Exclusive Offers</p>
+                <h2 class="limited-title">Limited Edition Fragrance Deals</h2>
+                <p class="limited-description">
                     Experience the essence of luxury with our exclusive perfume offers.
                     Whether it’s a signature scent for yourself or a gift for someone
                     special, our limited-time collections bring elegance and allure to every moment.
                 </p>
             </div>
 
-            <div class="special-grid">
+            <div class="limited-grid">
 
                 <!-- Special Item 1 -->
-                <div class="special-item">
-                    <div class="special-item-header">
+                <div class="limited-item">
+                    <div class="limited-item-header">
                         <div>
-                            <h3 class="special-item-title">Buy 1 Get 1 Free</h3>
-                            <p class="special-item-subtitle">
+                            <h3 class="limited-item-title">Buy 1 Get 1 Free</h3>
+                            <p class="limited-item-subtitle">
                                 On selected luxury perfumes — this month only
                             </p>
                         </div>
-                        <div class="special-item-price">Limited Offer</div>
+                        <div class="limited-item-price">Limited Offer</div>
                     </div>
 
-                    <div class="special-item-features">
-                        <div class="special-item-feature">
+                    <div class="limited-item-features">
+                        <div class="limited-item-feature">
                             <i class="fas fa-check"></i>
                             <span>Applicable to both For Him & For Her collections</span>
                         </div>
 
-                        <div class="special-item-feature">
+                        <div class="limited-item-feature">
                             <i class="fas fa-check"></i>
                             <span>Comes with a complimentary mini perfume sample</span>
                         </div>
 
-                        <div class="special-item-feature">
+                        <div class="limited-item-feature">
                             <i class="fas fa-check"></i>
                             <span>Valid until November 30th</span>
                         </div>
 
-                        <div class="special-item-feature">
+                        <div class="limited-item-feature">
                             <i class="fas fa-check"></i>
                             <span>Available online and in stores</span>
                         </div>
                     </div>
 
-                    <div class="special-item-footer">
+                    <div class="limited-item-footer">
                         <a href="#" class="btn btn-secondary">Shop Now</a>
-                        <div class="special-item-badge">BOGO Offer</div>
+                        <div class="limited-item-badge">BOGO Offer</div>
                     </div>
                 </div>
  
                 <!-- Special Item 2 -->
-                <div class="special-item">
-                    <div class="special-item-header">
+                <div class="limited-item">
+                    <div class="limited-item-header">
                         <div>
-                            <h3 class="special-item-title">Delux Gift Set</h3>
-                            <p class="special-item-subtitle">Elegance in every detail</p>
+                            <h3 class="limited-item-title">Delux Gift Set</h3>
+                            <p class="limited-item-subtitle">Elegance in every detail</p>
                         </div>
     
-                        <div class="special-item-price">AED 299</div>
+                        <div class="limited-item-price">AED 299</div>
                     </div>
-                    <div class="special-item-features">
-                        <div class="special-item-feature">
+                    <div class="limited-item-features">
+                        <div class="limited-item-feature">
                             <i class="fas fa-check"></i>
                             <span>Includes 3 mini fragrances — For Him & For Her</span>
                         </div>
 
-                        <div class="special-item-feature"> 
+                        <div class="limited-item-feature"> 
                             <i class="fas fa-check"></i>
                             <span>Premium packaging with gold foil detailing</span>
                         </div>
 
-                        <div class="special-item-feature">
+                        <div class="limited-item-feature">
                             <i class="fas fa-check"></i>
                             <span>Free delivery across UAE</span>
                         </div>
     
-                        <div class="special-item-feature">
+                        <div class="limited-item-feature">
                             <i class="fas fa-check"></i>
                             <span>Perfect for gifting or travel</span>
                         </div>  
                     </div>
     
-                    <div class="special-item-footer">
+                    <div class="limited-item-footer">
                         <a href="#" class="btn btn-secondary">Shop Now</a>
-                        <div class="special-item-badge">Limited Edition</div>
+                        <div class="limited-item-badge">Limited Edition</div>
                     </div> 
                 </div> 
             </div>
@@ -428,6 +444,11 @@
             <div class="bestsell-grid">
                 <!-- Bestseller Item 1 -->
                 <div class="bestsell-item">
+                    <button class="wishlist-btn" onclick="toggleWishlist(this, 'Velvet Bloom', 199)">
+   
+                        <i class="fas fa-heart"></i>
+
+                    </button>
                     <div class="bestsell-quote">"</div>
                     <p class="bestsell-content">
                         “Velvet Bloom” — a floral masterpiece with notes of rose and amber, perfect for any occasion.
@@ -449,6 +470,11 @@
 
                 <!-- Bestseller Item 2 -->
                 <div class="bestsell-item">
+                    <button class="wishlist-btn" onclick="toggleWishlist(this, 'Velvet Bloom', 199)">
+   
+                        <i class="fas fa-heart"></i>
+
+                    </button>
                     <div class="bestsell-quote">"</div>
                     <p class="bestsell-content">
                         “Golden Noir” — bold and mysterious, blending oud, musk, and hints of vanilla for lasting allure.
@@ -470,6 +496,11 @@
  
                 <!-- Bestseller Item 3 -->
                 <div class="bestsell-item">
+                    <button class="wishlist-btn" onclick="toggleWishlist(this, 'Velvet Bloom', 199)">
+   
+                        <i class="fas fa-heart"></i>
+
+                    </button>
                     <div class="bestsell-quote">"</div>
                     <p class="bestsell-content">
                         “Amber Whisper” — a warm, cozy scent that combines sandalwood and amber for evening elegance.
@@ -492,6 +523,11 @@
 
                 <!-- Bestseller Item 4 -->
                 <div class="bestsell-item">
+                    <button class="wishlist-btn" onclick="toggleWishlist(this, 'Velvet Bloom', 199)">
+   
+                        <i class="fas fa-heart"></i>
+
+                    </button>
     
                     <div class="bestsell-quote">"</div>
     
@@ -534,6 +570,32 @@
             </div>
         </div>
     </section>
+   
+  
+    <!-- Chatbot Icon -->
+    <div id="chatbotIcon" title="Chat with us">
+        <i class="fas fa-comment-alt"></i>
+    </div>
+
+
+    <!-- Chatbot Box -->
+    <div id="chatbotBox">
+        <div class="chat-header">
+            <h3><i class="fas fa-robot" style="margin-right: 8px;"></i> Delux Assistant</h3>
+            <button class="close-chat" title="Close chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    
+        <div id="chatMessages"></div>
+   
+        <div class="chat-input">
+            <input id="chatInput" type="text" placeholder="Ask about perfumes, orders, or recommendations..." />
+            <button id="sendChat" title="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer" id="contact">
@@ -602,7 +664,54 @@
         </div>
     </footer>
 
+   <script>
+    window.onload = function () {
+  const name = sessionStorage.getItem("username");
+  const usernameDisplay = document.getElementById("usernameDisplay");
+  const userIcon = document.querySelector(".user-icon");
+  const popup = document.getElementById("welcomePopup");
+
+  if (name) {
+    // Show welcome popup 
+    popup.innerHTML = `<div class="welcome-message">Welcome, ${name}!</div>`;
+    popup.classList.add("show");
+    
+    // Close popup functionality
+    const closeBtn = popup.querySelector(".close-popup");
+    if (closeBtn) {
+      closeBtn.onclick = function() {
+        popup.classList.remove("show");
+      };
+    }
+    
+    setTimeout(() => {
+      popup.classList.remove("show");
+    }, 5000);
+
+    
+    if (usernameDisplay) {
+      usernameDisplay.textContent = name;
+    }
+    
+    if (userIcon) {
+      userIcon.classList.add("signed-up");
+      // Update tooltip
+      userIcon.title = `Logged in as ${name}`;
+    }
+  } else {
+    // If no user is logged in, show "Guest" or empty
+    if (usernameDisplay) {
+      usernameDisplay.textContent = "";
+    }
+    if (userIcon) {
+      userIcon.title = "Login / Signup";
+    }
+  }
+};
+
+  </script>
 
     <script src="script.js"></script>
-  </body>
+ 
+</body>
 </html>

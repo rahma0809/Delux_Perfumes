@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Orders - Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="styles.css">
+
+<style>
+   
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .status-pending { background:#fff3cd; color:#856404; }
+    .status-processing { background:#d1ecf1; color:#0c5460; }
+    .status-shipped { background:#d4edda; color:#155724; }
+    .status-delivered { background:#28a745; color:white; }
+    .status-cancelled { background:#f8d7da; color:#721c24; }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+    th {
+        background: #9d2e33;
+        color: white;
+        font-weight: 600;
+    }
+    tr:hover {
+        background: #f9f9f9;
+    }
+    
+    /* Delete button style */
+    .btn-delete {
+        padding: 6px 12px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+    
+    .btn-delete:hover {
+        background: #c82333;
+    }
+    
+    .action-buttons {
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Delete Confirmation Modal Styles */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        text-align: center;
+    }
+    
+    .modal-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+    
+    .modal-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .modal-message {
+        color: #666;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+    
+    .modal-order-id {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 6px;
+        margin: 15px 0;
+        font-family: monospace;
+        font-weight: bold;
+        color: #9d2e33;
+    }
+    
+    .modal-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }
+    
+    .modal-btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        min-width: 100px;
+        transition: all 0.3s;
+    }
+    
+    .modal-btn-cancel {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .modal-btn-cancel:hover {
+        background: #545b62;
+    }
+    
+    .modal-btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .modal-btn-delete:hover {
+        background: #c82333;
+    }
+    
+    /* Success/Error Toast */
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 1001;
+        display: none;
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .toast-success {
+        background: #28a745;
+    }
+    
+    .toast-error {
+        background: #dc3545;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="admin.html">Dashboard</a> 
+    <a href="products.html">Products</a>
+    <a href="orders.html">Orders</a>
+    <a href="users.html">Users</a>
+</div>
+
+<div class="main">
+    <h1 class="title">Orders Management</h1>
+    
+    <div style="margin-bottom: 20px;">
+        <button onclick="loadOrders()" style="padding:10px 20px; background:#28a745; color:white; border:none; border-radius:6px; cursor:pointer;">
+            ↻ Refresh Orders
+        </button>
+        <span id="orderCount" style="margin-left: 15px; color: #666;">
+            Loading orders...
+        </span>
+    </div>
+    
+    <table id="ordersTable">
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Email</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        <!-- Orders will be loaded here -->
+    </table>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-title">Delete Order Confirmation</div>
+        <div class="modal-message">
+            Are you sure you want to delete this order?<br>
+            This action cannot be undone!
+        </div>
+        <div class="modal-order-id" id="modalOrderId">#ORDER_ID</div>
+        <div class="modal-buttons">
+            <button class="modal-btn modal-btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+            <button class="modal-btn modal-btn-delete" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Success/Error Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+    const API_URL = 'http://localhost:3000';
+    let currentOrderIdToDelete = null;
+    
+    // Show toast notification
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast toast-${type}`;
+        toast.style.display = 'block';
+        
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+    
+    // Delete modal functions
+    function openDeleteModal(orderId) {
+        currentOrderIdToDelete = orderId;
+        document.getElementById('modalOrderId').textContent = orderId;
+        document.getElementById('deleteModal').style.display = 'flex';
+    }
+    
+    function closeDeleteModal() {
+        currentOrderIdToDelete = null;
+        document.getElementById('deleteModal').style.display = 'none';
+    }
+    
+    async function confirmDelete() {
+        if (!currentOrderIdToDelete) return;
+        
+        const orderId = currentOrderIdToDelete;
+        closeDeleteModal();
+        
+        try {
+            console.log(`Deleting order: ${orderId}`);
+            
+            // ENCODE the order ID
+            const encodedOrderId = encodeURIComponent(orderId);
+            
+            const response = await fetch(`${API_URL}/orders/${encodedOrderId}`, {
+                method: 'DELETE'
+            });
+            
+            console.log('Delete response status:', response.status);
+            
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const text = await response.text();
+                console.error('Non-JSON delete response:', text.substring(0, 200));
+                throw new Error(`Server returned HTML (${response.status}) - Check endpoint URL`);
+            }
+            
+            const result = await response.json();
+            console.log('Delete response:', result);
+            
+            if (result.success) {
+                showToast(` Order ${orderId} deleted successfully`, 'success');
+                loadOrders(); // Reload orders
+            } else {
+                showToast(` Failed to delete: ${result.error || 'Unknown error'}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting order:', error);
+            showToast(` Failed to delete order: ${error.message}`, 'error');
+        }
+    }
+    
+    async function loadOrders() {
+        const table = document.getElementById('ordersTable');
+        const orderCount = document.getElementById('orderCount');
+        
+        try {
+            orderCount.innerHTML = 'Loading...';
+            
+            const response = await fetch(`${API_URL}/orders`);
+            const data = await response.json();
+            
+            const orders = data.success ? data.orders : [];
+            
+            orderCount.innerHTML = `Total Orders: <strong>${orders.length}</strong>`;
+            
+            const headerRow = table.rows[0];
+            table.innerHTML = '';
+            table.appendChild(headerRow);
+            
+            if (orders.length === 0) {
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td colspan="8" style="text-align:center; padding:40px;">
+                        No orders found. Orders will appear here after customers checkout.
+                    </td>
+                `;
+                return;
+            }
+            
+            // Add each order to the table
+            orders.forEach(order => {
+                const row = table.insertRow();
+                
+                // Format items for display
+                const itemsText = order.products || 
+                    (order.productDetails ? 
+                        order.productDetails.map(item => `${item.name} x${item.quantity}`).join(', ') : 
+                        'No items');
+                
+                row.innerHTML = `
+                    <td><strong>${order.id}</strong></td>
+                    <td>${order.customer || 'Guest'}</td>
+                    <td>${order.email || 'No email'}</td>
+                    <td>${itemsText}</td>
+                    <td>AED ${order.total ? order.total.toFixed(2) : '0.00'}</td>
+                    <td>
+                        <span class="status-badge status-${(order.status || 'pending').toLowerCase()}">
+                            ${order.status || 'Pending'}
+                        </span>
+                    </td>
+                    <td>${order.date || 'N/A'}<br><small>${order.time || ''}</small></td>
+                    <td>
+                        <div class="action-buttons">
+                            <select onchange="updateOrderStatus('${order.id}', this.value)">
+                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                                <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                                <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                            <button class="btn-delete" onclick="openDeleteModal('${order.id}')">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                `;
+            });
+            
+        } catch (error) {
+            console.error('Error loading orders:', error);
+            orderCount.innerHTML = `<span style="color:red;">Error loading orders</span>`;
+            
+            const row = table.insertRow();
+            row.innerHTML = `
+                <td colspan="8" style="text-align:center; padding:40px; color:red;">
+                    Error loading orders. Check if backend server is running.<br>
+                    <small>${error.message}</small>
+                </td>
+            `;
+        }
+    }
+    
+    async function updateOrderStatus(orderId, newStatus) {
+        try {
+            console.log(`Updating order ${orderId} to status: ${newStatus}`);
+            
+            const encodedOrderId = encodeURIComponent(orderId);
+            
+            const response = await fetch(`${API_URL}/orders/${encodedOrderId}/status`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+            
+            // Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                const text = await response.text();
+                console.error('Non-JSON response:', text.substring(0, 200));
+                throw new Error(`Server returned HTML (${response.status}) - Check endpoint URL`);
+            }
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                showToast(` Order ${orderId} status updated to ${newStatus}`, 'success');
+                loadOrders(); // Reload orders
+            } else {
+                showToast(` Failed: ${result.error || 'Unknown error'}`, 'error');
+            }
+        } catch (error) {
+            console.error('Error updating status:', error);
+            showToast(` Failed to update status: ${error.message}`, 'error');
+        }
+    }
+    
+    // Load orders when page loads
+    document.addEventListener('DOMContentLoaded', loadOrders);
+    
+    // Auto-refresh every 60 seconds
+    setInterval(loadOrders, 60000);
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('deleteModal');
+        if (event.target === modal) {
+            closeDeleteModal();
+        }
+    };
+</script>
+
+</body>
+</html> 

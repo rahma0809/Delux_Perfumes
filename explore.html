@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore – Delux Perfumes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+ <style>
+ 
+ :root {
+    --primary: #9d2e33;
+    --primary-dark: #7a1f24;
+    --primary-light: #c8686d;
+    --secondary: #d4a96a;
+    --secondary-dark: #b3894c;
+    --secondary-light: #efd3a7;
+    --font-heading: "Playfair Display", serif;
+    --font-body: "Outfit", sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    margin: 0;
+    background: #fff;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: var(--primary);
+    color: var(--secondary-light);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a.logo {
+    color: var(--secondary-light);
+    font-size: 28px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.header-icons a {
+    color: var(--secondary-light);
+    font-size: 22px;
+    margin-left: 20px;
+    text-decoration: none;
+    position: relative;
+}
+
+.header-icons .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: var(--secondary);
+    color: #fff;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+}
+
+/* Back arrow styled like the logo */
+.back-btn {
+    color: var(--secondary-light);       
+    font-family: var(--font-heading);    
+    font-size: 28px;                     
+    text-decoration: none;
+    margin-right: 10px;
+    transition: transform 0.2s;
+}
+
+
+
+
+/* Section Title */
+.section-title {
+    font-size: 26px;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    color: var(--primary-dark);
+    border-left: 6px solid var(--secondary);
+    padding-left: 10px;
+    margin: 30px 20px 10px;
+}
+
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+
+.card {
+
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: 0.3s;
+    font-family: var(--font-body);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+
+.card img {
+    width: 100%;
+    height: 220px;
+    border-radius: 12px 12px 0 0;
+    object-fit: cover;
+}
+
+.card h3 {
+    margin: 10px 0 5px;
+    font-size: 18px;
+    font-family: var(--font-heading);
+    color: var(--primary-dark);
+}
+
+.card .price {
+    color: var(--secondary-dark);
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+
+.add-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: var(--font-body);
+}
+
+.add-btn:hover {
+
+    background: var(--primary-dark);
+
+}
+
+/* Wishlist heart on product cards */
+.wishlist-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 22px;
+    color: #fefcfa; 
+    -webkit-text-stroke: 2px black;  /* black border */
+    cursor: pointer;
+    transition: 0.2s;
+    z-index: 10;
+}
+
+.wishlist-btn.active {
+    color: #cb1020; /* red when active */
+    border-color: red;       /* border turns red */
+    transform: scale(1.15);
+}
+
+.card {
+    position: relative; 
+}
+
+
+.toast {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%) translateX(100%);
+    background: #f9e79f; 
+    color: #000;         
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    z-index: 9999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.wishlist-toast {
+    position: fixed;
+    top: 60%;
+    right: 20px;
+    transform: translateY(-50%) translateX(100%);
+    background: #fce8b2; 
+    color: black;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    z-index: 9999;
+}
+
+.wishlist-toast.show {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+
+</style>
+</head>
+<body>
+
+    <!-- Header -->
+     <header>
+        <div class="logo-container">
+            <!-- Back Arrow -->
+            <a href="index.html" class="back-btn" title="Go Back">&#8592;</a>
+            <!-- Logo -->
+            <a href="index.html" class="logo">DELUX COLLECTION</a>
+        </div>
+
+ 
+        <div class="header-icons">
+            <a href="cart.html" title="Cart">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+ 
+            <a href="login.html" title="Login / Signup"><i class="fas fa-user"></i></a>
+ 
+        </div>
+
+    </header>
+
+    <!-- Example Section: For Her -->
+ 
+    <h2 class="section-title" id="for-her">For Her</h2>
+
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Rose Luxe', 'Images/imgp11.png')"></i>
+            <img src="Images/imgp11.png" alt="Rose Luxe">
+            <h3>Rose Luxe</h3>
+            <p class="price">AED 220</p>
+            <button class="add-btn" onclick="addToCart('Rose Luxe', 220, 'Images/imgp11.png')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Golden Mist', 'Images/imgp9.jpg')"></i>
+            <img src="Images/imgp9.jpg"alt="Golden Mist">
+            <h3>Golden Mist</h3>
+            <p class="price">AED 260</p>
+            <button class="add-btn" onclick="addToCart('Golden Mist', 260, 'Images/imgp9.jpg')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+             <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Jasmine Bliss', 'Images/imgp1.png')"></i>
+            <img src="Images/imgp1.png" alt="Jasmine Bliss">
+            <h3>Jasmine Bliss</h3>
+            <p class="price">AED 240</p>
+            <button class="add-btn" onclick="addToCart('Jasmine Bliss',240, 'Images/imgp1.png')">Add to Cart</button>
+ 
+        </div>
+ 
+        <div class="card">
+             <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Velvet Rose', 'Images/imgp2.jpg')"></i>
+            <img src="Images/imgp2.jpg"alt="Velvet Rose">
+            <h3>Velvet Rose</h3>
+            <p class="price">AED 230</p>
+            <button class="add-btn" onclick="addToCart('Velvet Rose',230, 'Images/imgp2.jpg')">Add to Cart</button>
+        </div>
+    </div>
+
+ 
+    <!-- FOR HIM -->
+    <h2 class="section-title" id="for-him">For Him</h2>
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Royal Oud', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp20.png" alt="Royal Oud">
+            <h3>Royal Oud</h3>
+            <p class="price">AED 280</p>
+            <button class="add-btn" onclick="addToCart('Royal Oud',280, 'Images/imgp20.png')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Dark Ember', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp19.png" alt="Dark Ember">
+            <h3>Dark Ember</h3>
+            <p class="price">AED 240</p>
+            <button class="add-btn" onclick="addToCart('Dark Ember',240,'Images/imgp19.png')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Cedar Noir', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp17.png" alt="Cedar Noir">
+            <h3>Cedar Noir</h3>
+            <p class="price">AED 260</p>
+            <button class="add-btn" onclick="addToCart('Cedar Noir',260, 'Images/imgp17.png')">Add to Cart</button>
+        </div>
+ 
+        <div class="card"> 
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Midnight Oud', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp5.jpg" alt="Midnight Oud">
+            <h3>Midnight Oud</h3>
+            <p class="price">AED 300</p>
+            <button class="add-btn" onclick="addToCart('Midnight Oud',300,'Images/imgp5.jpg')">Add to Cart</button>
+        </div>
+    </div>
+ 
+    <!-- UNISEX -->
+    <h2 class="section-title" id="unisex">Unisex</h2>
+
+    
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Amber Cloud', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp21.png" alt="Amber Cloud">
+            <h3>Amber Cloud</h3>
+            <p class="price">AED 230</p>
+            <button class="add-btn" onclick="addToCart('Amber Cloud',230,'Images/imgp21.png')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'White Suede', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp24.jpg" alt="White Suede">
+            <h3>White Suede</h3>
+            <p class="price">AED 210</p>
+            <button class="add-btn" onclick="addToCart('White Suede',210, 'Images/imgp24.jpg')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Citrus Bloom', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp23.png" alt="Citrus Bloom">
+            <h3>Citrus Bloom</h3>
+            <p class="price">AED 200</p>
+            <button class="add-btn" onclick="addToCart('Citrus Bloom',200, 'Images/imgp23.png')">Add to Cart</button>
+ 
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Sandalwood Mist', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp22.jpeg" alt="Sandalwood Mist">
+            <h3>Sandalwood Mist</h3>
+            <p class="price">AED 250</p>
+            <button class="add-btn" onclick="addToCart('Sandalwood Mist',250, 'Images/imgp22.jpeg')">Add to Cart</button>
+        </div>
+    </div>
+
+ 
+    <!-- GIFT SETS -->
+     <h2 class="section-title" id="gift-sets">Gift Sets</h2>
+
+    <div class="grid">
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Luxury Duo Set', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp26.png" alt="Luxury Duo Set">
+            <h3>Luxury Duo Set</h3>
+            <p class="price">AED 350</p>
+            <button class="add-btn" onclick="addToCart('Luxury Duo Set',350,'Images/imgp26.png')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Royal Premium Box', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp27.png" alt="Royal Premium Box">
+            <h3>Royal Premium Box</h3>
+            <p class="price">AED 420</p>
+            <button class="add-btn" onclick="addToCart('Royal Premium Box',420, 'Images/imgp27.png')">Add to Cart</button>
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Golden Essence Set', 'Images/imgp20.png')"></i>
+
+            <img src="Images/imgp7.png" alt="Golden Essence Set">
+            <h3>Golden Essence Set</h3>
+            <p class="price">AED 380</p>
+            <button class="add-btn" onclick="addToCart('Golden Essence Set',380, 'Images/imgp7.png')">Add to Cart</button> 
+        </div>
+ 
+        <div class="card">
+            <i class="fas fa-heart wishlist-btn" onclick="toggleWishlist(this, 'Elite Perfume Box', 'Images/imgp20.png')"></i>
+ 
+            <img src="Images/imgp25.png" alt="Elite Perfume Box"> 
+            <h3>Elite Perfume Box</h3>
+            <p class="price">AED 450</p>
+            <button class="add-btn" onclick="addToCart('Elite Perfume Box',450,'Images/imgp25.png')">Add to Cart</button>
+        </div>
+    </div>
+          
+    <div id="toast" class="toast"></div>
+    <div id="wishlistToast" class="wishlist-toast"></div>
+
+
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <script>
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+
+function toggleWishlist(el, name, image) {
+    el.classList.toggle('active');
+
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+    if (el.classList.contains("active")) {
+        wishlist.push({ name, image });
+        showWishlistToast(`${name} added to wishlist!`);
+    } else {
+        wishlist = wishlist.filter(item => item.name !== name);
+        showWishlistToast(`${name} removed from wishlist!`);
+    }
+
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+}
+
+
+function showWishlistToast(message) {
+    const toast = document.getElementById('wishlistToast');
+    toast.textContent = message;
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+
+
+function addToCart(name, price,image) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({name, price,image});
+    localStorage.setItem('cart', JSON.stringify(cart));
+    document.getElementById('cartCount').textContent = cart.length;
+
+   
+    showToast(`${name} added to cart!`);
+}
+
+// Initialize cart count on page load
+document.addEventListener('DOMContentLoaded', () => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    document.getElementById('cartCount').textContent = cart.length;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delux Signup / Login</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Google API -->
+  <script src="https://accounts.google.com/gsi/client" async></script>
+
+  <style>
+    .google-box {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+
+</head>
+<body class="auth-body">
+
+  <div class="auth-container">
+    <div class="auth-box">
+      <h1 class="logo2">DELUX</h1>
+      <h2 id="formTitle">Create Your Account</h2>
+
+      <!-- SIGNUP FORM -->
+      <form id="signupForm" class="form active">
+        <input id="signupName" type="text" placeholder="Full Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <input type="password" placeholder="Create Password" required>
+
+        <button type="submit" class="auth-btn">Sign Up</button>
+
+        <p class="switch-text">
+          Already have an account? <a href="#" id="showLogin">Login</a>
+        </p>
+
+        <!-- GOOGLE SIGN-IN BUTTON INSIDE BOX -->
+        <div class="google-box">
+          <div id="g_id_onload"
+               data-client_id="315013874328-0den2nm1k59vur9hk4slcjgmsoj2prts.apps.googleusercontent.com"
+               data-context="signin"
+               data-ux_mode="popup"
+               data-callback="handleCredentialResponse"
+               data-auto_prompt="false">
+          </div>
+
+          <div class="g_id_signin"
+               data-type="standard"
+               data-shape="rectangular"
+               data-theme="outline"
+               data-text="signin_with"
+               data-size="large">
+          </div>
+        </div>
+
+      </form>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" class="form">
+        <input type="email" placeholder="Email Address" required>
+        <input type="password" placeholder="Password" required>
+
+        <button type="submit" class="auth-btn">Login</button>
+
+        <p class="switch-text">
+          Don’t have an account? <a href="#" id="showSignup">Sign up</a>
+        </p>
+
+        <!-- GOOGLE SIGN-IN BUTTON INSIDE LOGIN BOX -->
+        <div class="google-box">
+          <div class="g_id_signin"
+               data-type="standard"
+               data-shape="rectangular"
+               data-theme="outline"
+               data-text="signin_with"
+               data-size="large">
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const showSignup = document.getElementById("showSignup");
+    const showLogin = document.getElementById("showLogin");
+    const formTitle = document.getElementById("formTitle");
+
+    // Google login callback
+    function handleCredentialResponse(response) {
+      const idToken = response.credential;
+      console.log("Google Token:", idToken);
+
+    
+      sessionStorage.setItem("username", "Google User");
+
+      window.location.href = "index.html";
+    }
+
+    
+signupForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const name = document.getElementById("signupName").value;
+  const email = signupForm.querySelector('input[type="email"]').value;
+  const password = signupForm.querySelector('input[type="password"]').value;
+
+  try {
+    const response = await fetch('http://localhost:3000/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Signup failed');
+    }
+
+    const user = await response.json();
+    
+    // Save user data for session
+    sessionStorage.setItem("userId", user._id);
+    sessionStorage.setItem("username", user.name); 
+    sessionStorage.setItem("userEmail", user.email);
+    
+    window.location.href = "index.html";
+  } catch (error) {
+    alert("Signup failed: " + error.message);
+  }
+});
+
+// Add login form handler
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const email = loginForm.querySelector('input[type="email"]').value;
+  const password = loginForm.querySelector('input[type="password"]').value;
+
+  try {
+    const response = await fetch('http://localhost:3000/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Login failed');
+    }
+
+    const user = await response.json();
+    
+    // Save user data for session
+    sessionStorage.setItem("userId", user._id);
+    sessionStorage.setItem("username", user.name);
+    sessionStorage.setItem("userEmail", user.email);
+    
+    window.location.href = "index.html";
+  } catch (error) {
+    alert("Login failed: " + error.message);
+  }
+});
+
+  </script>
+
+</body>
+</html>
